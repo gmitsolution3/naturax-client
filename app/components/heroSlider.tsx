@@ -125,22 +125,6 @@ const SingleSlider = ({
           <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
         </button>
       </>
-
-      {/* Dot Indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slider.images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`rounded-full transition-all duration-300 ${
-              index === currentIndex
-                ? "bg-orange-500 w-8 h-2"
-                : "bg-white/50 hover:bg-white/70 w-2 h-2"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
     </div>
   );
 }

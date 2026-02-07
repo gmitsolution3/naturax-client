@@ -30,28 +30,21 @@ const features = [
 
 export const FeaturesSection = () => {
   return (
-    <section className="py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <section className="py-16 px-4 bg-gray-50">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-6 lg:gap-8">
           {features.map((feature, idx) => {
             const Icon = feature.icon;
             return (
               <div
                 key={idx}
-                className="group relative bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-transparent overflow-hidden"
+                className="flex items-center gap-4 bg-white px-6 py-4 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300"
               >
-                {/* Background Gradient on Hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                
-                {/* Content */}
-                <div className="relative">
-                  {/* Icon */}
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <Icon className="w-6 h-6 text-white" strokeWidth={2.5} />
-                  </div>
-
-                  {/* Text */}
-                  <h3 className="font-semibold text-gray-900 mb-1 text-sm lg:text-base">
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${feature.gradient} flex items-center justify-center flex-shrink-0`}>
+                  <Icon className="w-5 h-5 text-white" strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 text-sm">
                     {feature.title}
                   </h3>
                   <p className="text-xs text-gray-500">

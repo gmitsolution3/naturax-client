@@ -55,44 +55,45 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
               const IconComponent = iconList[index % iconList.length];
 
               return (
-                <Link
-                  href={`/shop/${cat._id}`}
+              <Link
+                href={`/shop/${cat._id}`}
+                key={cat._id}
+                className={`h-full`}
+              >
+                <div
                   key={cat._id}
+                  className={
+                    "flex flex-col items-center justify-center gap-2 bg-white rounded-0 shadow hover:shadow-lg transition cursor-pointer text-center w-full h-full relative group overflow-hidden"
+                  }
                 >
-                  <div
-                    key={cat._id}
-                    className={
-                      "flex flex-col items-center justify-center gap-2 bg-white rounded-0 shadow hover:shadow-lg transition cursor-pointer text-center w-full h-full relative group overflow-hidden"
-                    }
-                  >
-                    {/* Icon */}
-                    {cat.image ? (
-                      <div className="w-full">
-                        <Image
-                          src={cat?.image}
-                          alt={cat.name}
-                          priority
-                          width={300}
-                          height={300}
-                          className="w-[500px] w-[300px] object-cover group-hover:scale-[110%] duration-300"
-                        />
-                      </div>
-                    ) : (
-                      <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
-                        <IconComponent
-                          size={28}
-                          className="text-primary"
-                        />
-                      </div>
-                    )}
+                  {/* Icon */}
+                  {cat.image ? (
+                    <div className="w-full">
+                      <Image
+                        src={cat?.image}
+                        alt={cat.name}
+                        priority
+                        width={300}
+                        height={300}
+                        className="w-[600px] h-[300px] object-cover group-hover:scale-[110%] duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
+                      <IconComponent
+                        size={28}
+                        className="text-primary"
+                      />
+                    </div>
+                  )}
 
-                    {/* Name */}
-                    <span className="text-xl font-medium text-gray-900 uppercase absolute bottom-10 left-10">
-                      {cat.name}
-                    </span>
-                  </div>
-                </Link>
-              );
+                  {/* Name */}
+                  <span className="text-sm font-medium text-white bg-primary shadow rounded-full p-2 uppercase absolute top-3 left-5">
+                    {cat.name}
+                  </span>
+                </div>
+              </Link>
+            );
             })}
         </div>
       )}
