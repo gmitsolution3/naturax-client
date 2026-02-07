@@ -41,60 +41,59 @@ interface TopCategoriesProps {
 export const TopCategories = ({ categories }: TopCategoriesProps) => {
   return (
     <section className="py-8 px-4 md:px-8 lg:px-16">
-      <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6 uppercase">
-        Top Categories
-      </h2>
       {!categories || categories.length === 0 ? (
         <div className="text-2xl text-center text-primary">
           No Category found
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {categories.slice(0, 5).sort((a, b) => a.order - b.order).map((cat, index) => {
-            // Pick a random icon for each category (based on index to keep consistent)
-            const IconComponent = iconList[index % iconList.length];
+        <div className="flex items-center justify-between gap-4">
+          {categories
+            .slice(0, 5)
+            .sort((a, b) => a.order - b.order)
+            .map((cat, index) => {
+              // Pick a random icon for each category (based on index to keep consistent)
+              const IconComponent = iconList[index % iconList.length];
 
-            return (
-              <Link
-                href={`/shop/${cat._id}`}
-                key={cat._id}
-                className={`${index === 0 ? "row-span-2 col-span-3" : ""} h-full`}
-              >
-                <div
+              return (
+                <Link
+                  href={`/shop/${cat._id}`}
                   key={cat._id}
-                  className={
-                    "flex flex-col items-center justify-center gap-2 bg-white rounded-0 shadow hover:shadow-lg transition cursor-pointer text-center w-full h-full relative group overflow-hidden"
-                  }
                 >
-                  {/* Icon */}
-                  {cat.image ? (
-                    <div className="w-full">
-                      <Image
-                        src={cat?.image}
-                        alt={cat.name}
-                        priority
-                        width={300}
-                        height={300}
-                        className="w-full object-cover group-hover:scale-[110%] duration-300"
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
-                      <IconComponent
-                        size={28}
-                        className="text-primary"
-                      />
-                    </div>
-                  )}
+                  <div
+                    key={cat._id}
+                    className={
+                      "flex flex-col items-center justify-center gap-2 bg-white rounded-0 shadow hover:shadow-lg transition cursor-pointer text-center w-full h-full relative group overflow-hidden"
+                    }
+                  >
+                    {/* Icon */}
+                    {cat.image ? (
+                      <div className="w-full">
+                        <Image
+                          src={cat?.image}
+                          alt={cat.name}
+                          priority
+                          width={300}
+                          height={300}
+                          className="w-[500px] w-[300px] object-cover group-hover:scale-[110%] duration-300"
+                        />
+                      </div>
+                    ) : (
+                      <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
+                        <IconComponent
+                          size={28}
+                          className="text-primary"
+                        />
+                      </div>
+                    )}
 
-                  {/* Name */}
-                  <span className="text-xl font-medium text-gray-900 uppercase absolute bottom-10 left-10">
-                    {cat.name}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+                    {/* Name */}
+                    <span className="text-xl font-medium text-gray-900 uppercase absolute bottom-10 left-10">
+                      {cat.name}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       )}
     </section>

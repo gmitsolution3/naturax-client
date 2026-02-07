@@ -25,9 +25,9 @@ const Navbar = async () => {
   return (
     <header className="w-full bg-white">
       <div className="max-w-full bg-white">
-        <div className="border-b border-gray-100 bg-linear-to-r from-primary-foreground to-primary ">
+        <div className="border-b border-gray-100 ">
           <div className="h-14 max-w-400 mx-auto px-4 flex justify-between items-center text-white">
-            <h5>Welcome to our website</h5>
+            <h5 className="text-primary font-medium">Welcome to our website</h5>
             <div>
               <NavBarMenu />
             </div>
