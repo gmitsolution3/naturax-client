@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -22,82 +21,161 @@ export const MenuNavbar = ({ categories }: any) => {
   }, []);
 
   return (
-    <div className="border-t border-gray-200 lg:py-3">
+    <div className="relative mb-2">
       <div className="max-w-7xl mx-auto px-4">
-        {/* 🔹 Mobile Header */}
+        
+        {/* Mobile Menu Toggle */}
         <div className="flex items-center justify-between py-3 lg:hidden">
-          <span className="font-semibold text-gray-800">Categories</span>
           <button
             onClick={() => setOpen(!open)}
-            className={clsx("transition-transform", open && "rotate-90")}
+            className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors duration-200"
           >
-            {open ? <X /> : <Menu />}
+            {open ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+            <span className="font-semibold text-sm">
+              {open ? "Close" : "Categories"}
+            </span>
           </button>
         </div>
 
-        {/* 🔹 Menu Items */}
-        <div
-          className={clsx(
-            "overflow-hidden transition-all duration-300 ease-in-out lg:overflow-visible",
-            open
-              ? "max-h-96 opacity-100"
-              : "max-h-0 opacity-0 lg:max-h-full lg:opacity-100",
-            "lg:opacity-100",
-          )}
-        >
-          <div className="flex flex-col lg:flex-row lg:justify-center lg:items-center gap-2 px-2 py-2 lg:py-0">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:block">
+          <ul className="flex items-center justify-center gap-1 py-0">
+            
+            {/* Home */}
+            <li>
+              <Link href="/">
+                <button
+                  onClick={() => handleClick("home")}
+                  className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group"
+                >
+                  <span className={activeCategory === "home" ? "text-primary" : ""}>
+                    Home
+                  </span>
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left transition-transform duration-300 ${
+                      activeCategory === "home"
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </button>
+              </Link>
+            </li>
+
             {/* All Products */}
-            <Link href={`/`}>
+            <li>
+              <Link href="/shop/all">
+                <button
+                  onClick={() => handleClick("all")}
+                  className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group"
+                >
+                  <span className={activeCategory === "all" ? "text-primary" : ""}>
+                    All Products
+                  </span>
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left transition-transform duration-300 ${
+                      activeCategory === "all"
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </button>
+              </Link>
+            </li>
+
+            {/* Dynamic Categories */}
+            {categories && categories.length > 0 ? (
+              categories.map((category: any) => (
+                <li key={category._id}>
+                  <Link href={`/shop/${category._id}`}>
+                    <button
+                      onClick={() => handleClick(category._id)}
+                      className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group capitalize"
+                    >
+                      <span className={activeCategory === category._id ? "text-primary" : ""}>
+                        {category.name}
+                      </span>
+                      <span
+                        className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left transition-transform duration-300 ${
+                          activeCategory === category._id
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }`}
+                      />
+                    </button>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li className="px-6 py-4 text-sm text-gray-400">
+                No categories available
+              </li>
+            )}
+          </ul>
+        </nav>
+
+        {/* Mobile Navigation */}
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <nav className="py-4 space-y-1">
+            
+            {/* Home */}
+            <Link href="/">
               <button
                 onClick={() => handleClick("home")}
-                className={clsx(
-                  "w-full lg:w-auto text-left px-4 py-2 text-sm font-semibold rounded-md transition whitespace-nowrap",
+                className={`w-full text-left px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
                   activeCategory === "home"
-                    ? "bg-linear-to-t from-primary to-primary-foreground text-white"
-                    : "text-gray-700 hover:bg-linear-to-t hover:from-primary hover:to-primary-foreground hover:text-white",
-                )}
+                    ? "bg-primary text-white shadow-md"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 Home
               </button>
             </Link>
-            <Link href={`/shop/all`}>
+
+            {/* All Products */}
+            <Link href="/shop/all">
               <button
                 onClick={() => handleClick("all")}
-                className={clsx(
-                  "w-full lg:w-auto text-left px-4 py-2 text-sm font-semibold rounded-md transition whitespace-nowrap",
+                className={`w-full text-left px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
                   activeCategory === "all"
-                    ? "bg-linear-to-t from-primary to-primary-foreground text-white"
-                    : "text-gray-700 hover:bg-linear-to-t hover:from-primary-foreground hover:to-primary hover:text-white",
-                )}
+                    ? "bg-primary text-white shadow-md"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
-                All Product
+                All Products
               </button>
             </Link>
 
-            {!categories || !categories.length ? (
-              <div className="text-center text-primary text-2xl">
-                No Category found
-              </div>
-            ) : (
+            {/* Dynamic Categories */}
+            {categories && categories.length > 0 ? (
               categories.map((category: any) => (
                 <Link href={`/shop/${category._id}`} key={category._id}>
                   <button
                     onClick={() => handleClick(category._id)}
-                    className={clsx(
-                      "w-full lg:w-auto text-left px-4 py-2 text-sm font-semibold rounded-md transition whitespace-nowrap",
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
                       activeCategory === category._id
-                        ? "bg-linear-to-t from-primary to-primary-foreground text-white"
-                        : "text-gray-700 hover:bg-linear-to-t hover:from-primary-foreground hover:to-primary hover:text-white",
-                    )}
+                        ? "bg-primary text-white shadow-md"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`}
                   >
                     {category.name}
                   </button>
                 </Link>
               ))
+            ) : (
+              <p className="px-4 py-3 text-sm text-gray-400">
+                No categories available
+              </p>
             )}
-
-            {/* Categories */}
-          </div>
+          </nav>
         </div>
       </div>
     </div>

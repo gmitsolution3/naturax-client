@@ -48,7 +48,7 @@ const ProductImage: React.FC<ProductImageProps> = ({
               fill
               style={{
                 objectFit: "cover",
-                transform: isZoomed ? "scale(2)" : "scale(1)",
+                transform: isZoomed ? "scale(1.5)" : "scale(1)",
                 transition: "transform 0.3s ease-in-out",
               }}
               className="rounded w-full"

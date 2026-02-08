@@ -1,6 +1,6 @@
 import { getProductDetails } from "@/lib/products";
 import React from "react";
-import { ProductDetail } from "../../components/productDetails";
+import {ProductDetail} from "../../components/productDetails";
 
 interface ProductPageProps {
   params: {

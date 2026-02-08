@@ -1,14 +1,19 @@
+"use client";
+
 import React, { useState } from "react";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { handleWhatsApp } from "./../(public)/shop/components/handleWhatsApp";
 import { createPortal } from "react-dom";
 import ProductVariant from "./../(public)/shop/components/ProductVariants";
+import { useRouter } from 'next/navigation';
 
 const ProductCard = ({ product }: { product: any }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isBuyNow, setIsBuyNow] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const router = useRouter();
 
   const from = "cardButton";
 
@@ -69,8 +74,12 @@ const ProductCard = ({ product }: { product: any }) => {
     setIsBuyNow(true);
   };
 
+  const handleViewDwtail = () => {
+    router.push(`/shop/${product.categoryId}/${product.slug}`);
+  };
+
   return (
-    <div className="group bg-white w-80 overflow-hidden hover:shadow-lg transition-all duration-300 relative border border-gray-200">
+    <div className="group/product bg-white overflow-hidden hover:shadow-lg transition-all duration-300 relative border border-gray-200">
       {/* Image Container */}
       <div className="relative overflow-hidden bg-white">
         {/* Discount Badge */}
@@ -84,7 +93,7 @@ const ProductCard = ({ product }: { product: any }) => {
 
         {/* Stock Badge */}
         {product.stockQuantity <= 10 && (
-          <div className="absolute bottom-3 left-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-3 left-3 z-20 opacity-0 group-hover/product:opacity-100 transition-opacity duration-300">
             <span className="bg-orange-500 text-white text-xs font-semibold px-2.5 py-1">
               Only {product.stockQuantity} left
             </span>
@@ -92,9 +101,9 @@ const ProductCard = ({ product }: { product: any }) => {
         )}
 
         {/* Quick Action Icons - Vertical Right Side */}
-        <div className="absolute top-3 right-0 z-20 flex flex-col gap-1 translate-x-full group-hover:translate-x-0 transition-transform duration-300">
+        <div className="absolute top-3 right-0 z-20 flex flex-col gap-1 translate-x-full group-hover/product:translate-x-0 transition-transform duration-300">
           <button
-            onClick={handleBuyNow}
+            onClick={handleViewDwtail}
             className="bg-white text-gray-700 p-2.5 hover:bg-primary hover:text-white transition-colors border-l border-t border-b border-gray-200"
             title="Quick View"
           >
@@ -127,12 +136,12 @@ const ProductCard = ({ product }: { product: any }) => {
           <img
             src={product.thumbnail}
             alt={product.title}
-            className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity duration-300"
+            className="w-full h-80 object-cover group-hover/product:opacity-90 transition-opacity duration-300"
           />
         </div>
 
         {/* Add to Cart Button - Bottom overlay on hover */}
-        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/product:opacity-100 transition-opacity duration-300">
           <button
             onClick={handleAddToCart}
             className="w-full bg-primary text-white py-3 text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
@@ -156,7 +165,7 @@ const ProductCard = ({ product }: { product: any }) => {
         </h3>
 
         {/* Description - shows on hover */}
-        <p className="text-xs text-gray-500 mb-3 line-clamp-2 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300">
+        <p className="text-xs text-gray-500 mb-3 line-clamp-2 h-auto opacity-0 group-hover/product:h-auto group-hover/product:opacity-100 transition-all duration-300">
           {product.description.slice(0, 80)}...
         </p>
 
@@ -175,7 +184,7 @@ const ProductCard = ({ product }: { product: any }) => {
         </div>
 
         {/* Bottom Actions - Shows on hover */}
-        <div className="flex gap-2 h-0 opacity-0 overflow-hidden group-hover:h-auto group-hover:opacity-100 transition-all duration-300">
+        <div className="flex gap-2 h-0 opacity-0 overflow-hidden group-hover/product:h-auto group-hover/product:opacity-100 transition-all duration-300">
           <button
             onClick={handleBuyNow}
             className="flex-1 bg-primary text-white py-2 text-xs font-semibold hover:bg-primary/90 transition-colors"

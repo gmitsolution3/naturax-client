@@ -5,15 +5,13 @@ import { getCategories, getMarquee } from "@/lib/categories";
 import { MenuNavbar } from "../components/Menu";
 import MarqueeText from "../components/marquee";
 import { getBrandInfo } from "@/lib/social";
-import Link from "next/link";
 import { NavBarMenu } from "../components/navBarMenu";
 import AccountDropdown from "../components/AccountDropdown";
-
 
 const Navbar = async () => {
   const getAllCategories = await getCategories();
   const brandInfoRaw = await getBrandInfo();
-  const marqueeText = await getMarquee()
+  const marqueeText = await getMarquee();
 
   const brandInfo = {
     logo: brandInfoRaw?.data?.logo ?? "/placeholder.svg",
@@ -23,39 +21,66 @@ const Navbar = async () => {
   };
 
   return (
-    <header className="w-full bg-white">
-      <div className="max-w-full bg-white">
-        <div className="border-b border-gray-100 ">
-          <div className="h-14 max-w-400 mx-auto px-4 flex justify-between items-center text-white">
-            <h5 className="text-primary font-medium">Welcome to our website</h5>
-            <div>
+    <header className="w-full bg-white sticky top-0 z-50 shadow-sm">
+      {/* Top Bar - Info & Account */}
+      <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-2 md:py-0">
+          <div className="h-10 flex justify-between items-center text-sm">
+            <p className="text-gray-600 font-medium hidden md:block">
+              Welcome to {brandInfo.name} - Your Trusted Shop
+            </p>
+            <div className="flex items-center gap-6 ml-auto">
               <NavBarMenu />
-            </div>
-            <div className="block md:hidden">
-              <AccountDropdown />
+              <div className="md:hidden">
+                <AccountDropdown />
+              </div>
             </div>
           </div>
         </div>
-        <div className="border-b border-gray-300">
-          <div className="max-w-7xl mx-auto px-4 flex flex-row gap-4 lg:gap-0 justify-between items-center py-5">
-            <ComLogo />
-            <div className="hidden md:block">
+      </div>
+
+      {/* Main Header - Logo, Search, Cart */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between md:py-5 md:py-6 gap-4 md:gap-6">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <ComLogo />
+            </div>
+
+            {/* Search Bar - Desktop */}
+            <div className="hidden lg:flex flex-1 max-w-3xl">
               <HeaderSearchBar
                 categories={getAllCategories.data}
                 name={brandInfo.name}
                 phone={brandInfo.phone}
               />
             </div>
-            <BookCard />
+
+            {/* Cart */}
+            <div className="flex items-center gap-3">
+              <BookCard />
+            </div>
           </div>
-        </div>
-        <div className="bg-white border-b border-gray-300 shadow-md">
-          <MenuNavbar categories={getAllCategories.data} />
-        </div>
-        <div className="bg-white border-b border-gray-300 shadow-md">
-          <MarqueeText text={marqueeText.data.text}/>
+
+          {/* Search Bar - Mobile */}
+          {/* <div className="lg:hidden pb-4">
+            <HeaderSearchBar
+              categories={getAllCategories.data}
+              name={brandInfo.name}
+              phone={brandInfo.phone}
+            />
+          </div> */}
         </div>
       </div>
+
+      {/* Navigation Menu */}
+      <div className="bg-white border-b border-gray-200">
+        <MenuNavbar categories={getAllCategories.data} />
+      </div>
+
+      {/* Promotional Marquee */}
+      <MarqueeText text={marqueeText.data.text} />
     </header>
   );
 };

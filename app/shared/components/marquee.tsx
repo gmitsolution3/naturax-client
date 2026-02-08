@@ -2,7 +2,7 @@
 
 interface MarqueeTextProps {
   text?: string;
-  speed?: number; // seconds, default 20s
+  speed?: number;
 }
 
 const MarqueeText: React.FC<MarqueeTextProps> = ({
@@ -10,19 +10,23 @@ const MarqueeText: React.FC<MarqueeTextProps> = ({
   speed = 20,
 }) => {
   return (
-    <div className="w-full overflow-hidden bg-primary text-white py-2">
-      <div className="flex animate-marquee">
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+    <div className="w-full overflow-hidden bg-gradient-to-r from-primary via-primary/95 to-primary text-white py-2.5 shadow-sm">
+      <div 
+        className="flex whitespace-nowrap hover:pause-animation"
+        style={{
+          animation: `marquee ${speed}s linear infinite`,
+        }}
+      >
+        <span className="inline-block text-sm md:text-base font-medium px-8">
           {text}
         </span>
-
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm md:text-base font-medium px-8">
           {text}
         </span>
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm md:text-base font-medium px-8">
           {text}
         </span>
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm md:text-base font-medium px-8">
           {text}
         </span>
       </div>
@@ -37,9 +41,8 @@ const MarqueeText: React.FC<MarqueeTextProps> = ({
           }
         }
 
-        .animate-marquee {
-          display: flex;
-          animation: marquee 20s linear infinite;
+        .hover\\:pause-animation:hover {
+          animation-play-state: paused;
         }
       `}</style>
     </div>

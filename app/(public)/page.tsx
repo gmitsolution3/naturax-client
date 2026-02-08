@@ -53,7 +53,7 @@ const MainPage = async () => {
 
       <div>
         <div className="my-5">
-          <h1 className="text-4xl font-bold pl-4 text-center uppercase font-semibold">Why choice us</h1>
+          <h1 className="text-xl lg:text-4xl font-bold pl-4 text-center uppercase font-semibold mb-5">Why choice us</h1>
         </div>
         <div>
           <FeaturesSection />
@@ -67,7 +67,7 @@ const MainPage = async () => {
 
       <div className="max-w-7xl mx-auto">
         <div className="my-5 border-b-2 border-b-gray-300 pb-3">
-          <h1 className="text-4xl font-bold pl-4 font-semibold uppercase mb-2">Find your best one</h1>
+          <h1 className="text-xl lg:text-4xl font-bold pl-4 text-start uppercase font-semibold mb-5">Find your best one</h1>
           <p className="pl-4 text-gray-700">
             We provide our best quality
           </p>

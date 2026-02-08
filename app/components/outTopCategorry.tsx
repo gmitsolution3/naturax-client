@@ -6,7 +6,7 @@ export const OurTopCategory = async () => {
   const res = await getCategories();
 
   return (
-    <div className="max-w-7xl mx-auto min-h-[30vh] -mt-40">
+    <div className="max-w-7xl mx-auto min-h-[30vh] md:-mt-40">
       <TopCategories categories={res.data}/>
     </div>
   );
