@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 
 export const BookCard = ({ categories }: any) => {
   const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [selectCategory, setSelectCategory] = useState<string>("All Categories");
+  const [selectCategory, setSelectCategory] =
+    useState<string>("All Categories");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
@@ -17,6 +19,7 @@ export const BookCard = ({ categories }: any) => {
 
   useEffect(() => {
     const updateCart = () => {
+      setCart(getCart());
       setCartCount(getCart().length);
     };
 
@@ -40,31 +43,43 @@ export const BookCard = ({ categories }: any) => {
   // Close search when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const searchContainer = document.getElementById('search-container');
-      const searchIcon = document.getElementById('search-icon');
-      
-      if (isSearchOpen && 
-          searchContainer && 
-          !searchContainer.contains(event.target as Node) &&
-          searchIcon && 
-          !searchIcon.contains(event.target as Node)) {
+      const searchContainer = document.getElementById(
+        "search-container",
+      );
+      const searchIcon = document.getElementById("search-icon");
+
+      if (
+        isSearchOpen &&
+        searchContainer &&
+        !searchContainer.contains(event.target as Node) &&
+        searchIcon &&
+        !searchIcon.contains(event.target as Node)
+      ) {
         setIsSearchOpen(false);
       }
     };
 
     if (isSearchOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSearchOpen]);
+
+  const cartSubTotal = cart.reduce(
+    (acc, item: any) => acc + item.productPrice * item.quantity,
+    0,
+  );
+
+  const cartItemLength = cart.reduce((acc, item: any) => acc + item.quantity, 0);
+
 
   return (
     <div className="flex items-center gap-2">
       {/* Search Icon Button */}
-      <button 
+      <button
         id="search-icon"
         onClick={() => setIsSearchOpen(!isSearchOpen)}
         className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
@@ -78,19 +93,18 @@ export const BookCard = ({ categories }: any) => {
       {isSearchOpen && (
         <div className="fixed inset-0 z-[100] md:absolute md:inset-auto md:top-full md:left-0 md:right-0 md:mt-2">
           {/* Backdrop for mobile */}
-          <div 
+          <div
             className="fixed inset-0 bg-black/50 md:hidden"
             onClick={() => setIsSearchOpen(false)}
           />
-          
+
           {/* Search Container */}
-          <div 
+          <div
             id="search-container"
             className="relative w-full max-w-2xl mx-auto md:shadow-lg"
           >
             <form onSubmit={handleSearch} className="w-full">
               <div className="flex items-stretch border border-gray-300 rounded-md overflow-hidden bg-white hover:border-gray-400 focus-within:border-primary transition-colors duration-200">
-                
                 {/* Category Dropdown */}
                 <div className="relative hidden md:flex items-center border-r border-gray-300">
                   <button
@@ -98,7 +112,9 @@ export const BookCard = ({ categories }: any) => {
                     onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                     className="flex items-center gap-2 px-4 py-2.5 text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap bg-white"
                   >
-                    <span className="max-w-[120px] truncate">{selectCategory}</span>
+                    <span className="max-w-[120px] truncate">
+                      {selectCategory}
+                    </span>
                     <svg
                       className={`w-4 h-4 transition-transform duration-200 ${isCategoryOpen ? "rotate-180" : ""}`}
                       fill="none"
@@ -121,7 +137,7 @@ export const BookCard = ({ categories }: any) => {
                         className="fixed inset-0 z-[60]"
                         onClick={() => setIsCategoryOpen(false)}
                       />
-                      
+
                       <div className="absolute top-full left-0 mt-1 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-[70] max-h-96 overflow-auto">
                         <div className="py-1">
                           <button
@@ -143,7 +159,9 @@ export const BookCard = ({ categories }: any) => {
                               <button
                                 type="button"
                                 className="block w-full px-4 py-2.5 text-left text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors duration-150 capitalize"
-                                onClick={() => setSelectCategory(category.name)}
+                                onClick={() =>
+                                  setSelectCategory(category.name)
+                                }
                               >
                                 {category.name}
                               </button>
@@ -191,7 +209,10 @@ export const BookCard = ({ categories }: any) => {
 
       {/* Cart Icon Container */}
       <div className="relative group flex">
-        <button onClick={() => router.push('/checkoutCart')} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
+        <button
+          onClick={() => router.push("/checkoutCart")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
+        >
           {/* Icon with Badge */}
           <div className="relative">
             <ShoppingCart className="w-5 h-5 text-gray-700 group-hover:text-primary transition-colors duration-200" />
@@ -199,7 +220,7 @@ export const BookCard = ({ categories }: any) => {
             {/* Badge */}
             {cartCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
-                {cartCount > 9 ? "9+" : cartCount}
+                {cartCount > 9 ? "9+" : cartItemLength}
               </span>
             )}
           </div>
@@ -210,7 +231,7 @@ export const BookCard = ({ categories }: any) => {
               Shopping Cart
             </span>
             <span className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors duration-200">
-              ${cartCount > 0 ? "0.00" : "0.00"}
+              ${cartCount > 0 ? cartSubTotal : "0.00"}
             </span>
           </div>
         </button>

@@ -74,47 +74,36 @@ const ProductCard = ({ product }: { product: any }) => {
     setIsBuyNow(true);
   };
 
-  const handleViewDwtail = () => {
+  const handleViewDetail = () => {
     router.push(`/shop/${product.categoryId}/${product.slug}`);
   };
 
   return (
-    <div className="group/product bg-white overflow-hidden hover:shadow-lg transition-all duration-300 relative border border-gray-200">
+    <div className="group/product bg-white overflow-hidden hover:shadow-xl transition-all duration-300 relative border border-gray-200">
       {/* Image Container */}
       <div className="relative overflow-hidden bg-white">
-        {/* Discount Badge */}
-        {hasDiscount && (
-          <div className="absolute top-3 left-3 z-20">
+        {/* Badges Container - Top Left */}
+        <div className="absolute top-3 left-3 z-20 flex flex-col gap-1">
+          {hasDiscount && (
             <span className="bg-primary text-white text-xs font-semibold px-2.5 py-1">
               {getDiscountLabel()}
             </span>
-          </div>
-        )}
-
-        {/* Stock Badge */}
-        {product.stockQuantity <= 10 && (
-          <div className="absolute bottom-3 left-3 z-20 opacity-0 group-hover/product:opacity-100 transition-opacity duration-300">
+          )}
+          {product.stockQuantity <= 10 && (
             <span className="bg-orange-500 text-white text-xs font-semibold px-2.5 py-1">
-              Only {product.stockQuantity} left
+              {product.stockQuantity} left
             </span>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Quick Action Icons - Vertical Right Side */}
-        <div className="absolute top-3 right-0 z-20 flex flex-col gap-1 translate-x-full group-hover/product:translate-x-0 transition-transform duration-300">
-          <button
-            onClick={handleViewDwtail}
-            className="bg-white text-gray-700 p-2.5 hover:bg-primary hover:text-white transition-colors border-l border-t border-b border-gray-200"
-            title="Quick View"
-          >
-            <Eye className="w-4 h-4" />
-          </button>
+        {/* Wishlist Button - Top Right */}
+        <div className="absolute top-3 right-3 z-20">
           <button
             onClick={() => setIsFavorite(!isFavorite)}
-            className={`p-2.5 transition-colors border-l border-b border-gray-200 ${
+            className={`p-2 transition-all duration-300 ${
               isFavorite
                 ? "bg-red-500 text-white"
-                : "bg-white text-gray-700 hover:bg-primary hover:text-white"
+                : "bg-white/90 text-gray-700 hover:bg-white"
             }`}
             title="Add to Wishlist"
           >
@@ -122,56 +111,67 @@ const ProductCard = ({ product }: { product: any }) => {
               className={`w-4 h-4 ${isFavorite ? "fill-current" : ""}`}
             />
           </button>
-          <button
-            onClick={() => handleWhatsApp()}
-            className="bg-white text-gray-700 p-2.5 hover:bg-green-500 hover:text-white transition-colors border-l border-b border-gray-200"
-            title="WhatsApp"
-          >
-            <FaWhatsapp className="w-4 h-4" />
-          </button>
         </div>
 
         {/* Product Image */}
-        <div className="relative">
+        <div className="relative cursor-pointer" onClick={handleViewDetail}>
           <img
             src={product.thumbnail}
             alt={product.title}
-            className="w-full h-80 object-cover group-hover/product:opacity-90 transition-opacity duration-300"
+            className="w-full h-80 object-cover transition-transform duration-500 group-hover/product:scale-105"
           />
+          
+          {/* Dark overlay on hover */}
+          <div className="absolute inset-0 bg-black/0 group-hover/product:bg-black/10 transition-all duration-300" />
         </div>
 
-        {/* Add to Cart Button - Bottom overlay on hover */}
-        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/product:opacity-100 transition-opacity duration-300">
-          <button
-            onClick={handleAddToCart}
-            className="w-full bg-primary text-white py-3 text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </button>
+        {/* Horizontal Action Bar - Slides up from bottom */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover/product:translate-y-0 transition-transform duration-300 bg-white border-t border-gray-200">
+          <div className="flex divide-x divide-gray-200">
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold text-gray-900 hover:bg-primary hover:text-white transition-colors"
+              title="Add to Cart"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span>Add to Cart</span>
+            </button>
+            <button
+              onClick={handleViewDetail}
+              className="flex items-center justify-center px-4 py-3 text-gray-900 hover:bg-primary hover:text-white transition-colors"
+              title="Quick View"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleWhatsApp()}
+              className="flex items-center justify-center px-4 py-3 text-gray-900 hover:bg-green-500 hover:text-white transition-colors"
+              title="WhatsApp"
+            >
+              <FaWhatsapp className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4">
         {/* Category */}
-        <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+        <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">
           {product.category}
         </div>
 
         {/* Title */}
-        <h3 className="text-gray-900 font-normal text-sm mb-2 line-clamp-2 leading-relaxed min-h-[2.5rem] hover:text-primary transition-colors cursor-pointer">
+        <h3 
+          onClick={handleViewDetail}
+          className="text-gray-900 font-medium text-base mb-3 line-clamp-2 leading-snug min-h-[3rem] hover:text-primary transition-colors cursor-pointer"
+        >
           {product.title}
         </h3>
 
-        {/* Description - shows on hover */}
-        <p className="text-xs text-gray-500 mb-3 line-clamp-2 h-auto opacity-0 group-hover/product:h-auto group-hover/product:opacity-100 transition-all duration-300">
-          {product.description.slice(0, 80)}...
-        </p>
-
         {/* Price */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg font-bold text-gray-900">
+        <div className="flex items-baseline gap-2 mb-4">
+          <span className="text-xl font-bold text-gray-900">
             ৳{discountedPrice}
           </span>
           {hasDiscount && (
@@ -179,35 +179,20 @@ const ProductCard = ({ product }: { product: any }) => {
               <span className="text-sm text-gray-400 line-through">
                 ৳{product.basePrice}
               </span>
+              <span className="text-xs font-semibold text-green-600">
+                Save ৳{parseInt(product.basePrice) - discountedPrice}
+              </span>
             </>
           )}
         </div>
 
-        {/* Bottom Actions - Shows on hover */}
-        <div className="flex gap-2 h-0 opacity-0 overflow-hidden group-hover/product:h-auto group-hover/product:opacity-100 transition-all duration-300">
-          <button
-            onClick={handleBuyNow}
-            className="flex-1 bg-primary text-white py-2 text-xs font-semibold hover:bg-primary/90 transition-colors"
-          >
-            Order Now
-          </button>
-          <button
-            onClick={() => handleWhatsApp()}
-            className="bg-green-500 text-white px-3 py-2 text-xs hover:bg-green-600 transition-colors"
-          >
-            <FaWhatsapp className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Stock Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-100">
-        <div
-          className="h-full bg-primary transition-all duration-700"
-          style={{
-            width: `${Math.min((product.stockQuantity / 50) * 100, 100)}%`,
-          }}
-        />
+        {/* Order Now Button - Always Visible */}
+        <button
+          onClick={handleBuyNow}
+          className="w-full bg-gray-900 text-white py-2.5 text-sm font-semibold hover:bg-primary transition-colors duration-300"
+        >
+          Order Now
+        </button>
       </div>
 
       {isCartModalOpen &&

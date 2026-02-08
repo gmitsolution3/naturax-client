@@ -48,7 +48,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
       ) : (
         <div>
           <div>
-            <h2 className="text-xl lg:text-4xl font-bold pl-4 text-center uppercase font-semibold mb-5 block lg:hidden">Top Categories</h2>
+            <h2 className="text-xl lg:text-4xl font-bold pl-4 text-center uppercase font-semibold mb-5">Top Categories</h2>
           </div>
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             {categories
@@ -63,13 +63,11 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                   <Link
                     href={`/shop/${cat._id}`}
                     key={cat._id}
-                    className={`h-full`}
+                    className={`h-full rounded-full`}
                   >
                     <div
                       key={cat._id}
-                      className={
-                        "flex flex-col items-center justify-center gap-2 bg-white rounded-0 shadow hover:shadow-lg transition cursor-pointer text-center w-full h-full relative group overflow-hidden"
-                      }
+                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-48 h-48 md:w-60 md:h-60"
                     >
                       {/* Icon */}
                       {cat.image ? (
@@ -93,7 +91,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                       )}
 
                       {/* Name */}
-                      <span className="text-sm font-medium text-white bg-primary shadow rounded-full p-2 uppercase absolute top-3 left-5">
+                      <span className="text-sm font-medium text-white bg-primary shadow rounded-full p-2 uppercase absolute bottom-0 left-0 right-0">
                         {cat.name}
                       </span>
                     </div>
