@@ -23,7 +23,6 @@ export const MenuNavbar = ({ categories }: any) => {
   return (
     <div className="relative mb-2">
       <div className="max-w-7xl mx-auto px-4">
-        
         {/* Mobile Menu Toggle */}
         <div className="flex items-center justify-between py-3 lg:hidden">
           <button
@@ -43,16 +42,19 @@ export const MenuNavbar = ({ categories }: any) => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:block">
-          <ul className="flex items-center justify-center gap-1 py-0">
-            
+          <ul className="flex items-center justify-center gap-0 py-0">
             {/* Home */}
             <li>
               <Link href="/">
                 <button
                   onClick={() => handleClick("home")}
-                  className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group"
+                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase"
                 >
-                  <span className={activeCategory === "home" ? "text-primary" : ""}>
+                  <span
+                    className={
+                      activeCategory === "home" ? "text-primary" : ""
+                    }
+                  >
                     Home
                   </span>
                   <span
@@ -71,9 +73,13 @@ export const MenuNavbar = ({ categories }: any) => {
               <Link href="/shop/all">
                 <button
                   onClick={() => handleClick("all")}
-                  className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group"
+                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase"
                 >
-                  <span className={activeCategory === "all" ? "text-primary" : ""}>
+                  <span
+                    className={
+                      activeCategory === "all" ? "text-primary" : ""
+                    }
+                  >
                     All Products
                   </span>
                   <span
@@ -89,14 +95,20 @@ export const MenuNavbar = ({ categories }: any) => {
 
             {/* Dynamic Categories */}
             {categories && categories.length > 0 ? (
-              categories.map((category: any) => (
+              categories.slice(0, 5).map((category: any) => (
                 <li key={category._id}>
                   <Link href={`/shop/${category._id}`}>
                     <button
                       onClick={() => handleClick(category._id)}
-                      className="relative px-6 py-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors duration-200 group capitalize"
+                      className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group capitalize uppercase"
                     >
-                      <span className={activeCategory === category._id ? "text-primary" : ""}>
+                      <span
+                        className={
+                          activeCategory === category._id
+                            ? "text-primary"
+                            : ""
+                        }
+                      >
                         {category.name}
                       </span>
                       <span
@@ -125,7 +137,6 @@ export const MenuNavbar = ({ categories }: any) => {
           }`}
         >
           <nav className="py-4 space-y-1">
-            
             {/* Home */}
             <Link href="/">
               <button
@@ -157,7 +168,10 @@ export const MenuNavbar = ({ categories }: any) => {
             {/* Dynamic Categories */}
             {categories && categories.length > 0 ? (
               categories.map((category: any) => (
-                <Link href={`/shop/${category._id}`} key={category._id}>
+                <Link
+                  href={`/shop/${category._id}`}
+                  key={category._id}
+                >
                   <button
                     onClick={() => handleClick(category._id)}
                     className={`w-full text-left px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${

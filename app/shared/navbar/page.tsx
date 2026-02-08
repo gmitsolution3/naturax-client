@@ -22,65 +22,51 @@ const Navbar = async () => {
 
   return (
     <header className="w-full bg-white sticky top-0 z-50 shadow-sm">
-      {/* Top Bar - Info & Account */}
-      <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-2 md:py-0">
-          <div className="h-10 flex justify-between items-center text-sm">
-            <p className="text-gray-600 font-medium hidden md:block">
-              Welcome to {brandInfo.name} - Your Trusted Shop
-            </p>
-            <div className="flex items-center gap-6 ml-auto">
-              <NavBarMenu />
-              <div className="md:hidden">
-                <AccountDropdown />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Top Promotional Banner */}
+      <MarqueeText text={marqueeText.data.text} />
 
-      {/* Main Header - Logo, Search, Cart */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between md:py-5 md:py-6 gap-4 md:gap-6">
+      {/* Main Header */}
+      <div className="bg-white">
+        <div className="mx-auto px-4 lg:px-6">
+          <div className="flex items-center justify-between gap-4">
+            
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <div>
+              <MenuNavbar categories={getAllCategories.data} />
+            </div>
+
+            {/* Center Section - Search Bar (Desktop) */}
+            <div className="hidden text-center lg:flex flex-1 w-full mx-auto mx-8">
               <ComLogo />
             </div>
 
-            {/* Search Bar - Desktop */}
-            <div className="hidden lg:flex flex-1 max-w-3xl">
-              <HeaderSearchBar
-                categories={getAllCategories.data}
-                name={brandInfo.name}
-                phone={brandInfo.phone}
-              />
-            </div>
+            {/* Right Section - Nav Menu & Cart */}
+            <div className="flex items-center justify-end gap-4 lg:gap-6 basis-2/5">
+              {/* Desktop Navigation Menu */}
+              <div className="hidden lg:block">
+                <NavBarMenu />
+              </div>
 
-            {/* Cart */}
-            <div className="flex items-center gap-3">
+              {/* Mobile Account Dropdown */}
+              <div className="lg:hidden">
+                <AccountDropdown />
+              </div>
+
+              {/* Shopping Cart */}
               <BookCard />
             </div>
           </div>
 
-          {/* Search Bar - Mobile */}
-          {/* <div className="lg:hidden pb-4">
+          {/* Mobile Search Bar */}
+          <div className="lg:hidden pb-4">
             <HeaderSearchBar
               categories={getAllCategories.data}
               name={brandInfo.name}
               phone={brandInfo.phone}
             />
-          </div> */}
+          </div>
         </div>
       </div>
-
-      {/* Navigation Menu */}
-      <div className="bg-white border-b border-gray-200">
-        <MenuNavbar categories={getAllCategories.data} />
-      </div>
-
-      {/* Promotional Marquee */}
-      <MarqueeText text={marqueeText.data.text} />
     </header>
   );
 };

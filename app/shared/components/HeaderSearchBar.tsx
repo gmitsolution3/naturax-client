@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Phone } from "lucide-react";
+import { Search } from "lucide-react";
 import Link from "next/link";
 
 export default function HeaderSearchBar({ categories, name, phone }: any) {
@@ -14,20 +14,18 @@ export default function HeaderSearchBar({ categories, name, phone }: any) {
     console.log("Searching for:", searchQuery, "in", selectCategory);
   };
 
-  const hotlineNumber = phone || "(12) 345 67895";
-
   return (
     <div className="w-full">
       {/* Search Form */}
       <form onSubmit={handleSearch} className="w-full">
-        <div className="flex items-center border-2 border-gray-200 rounded-full bg-white hover:border-primary/60 focus-within:border-primary transition-all duration-300 shadow-sm hover:shadow-md">
+        <div className="flex items-stretch border border-gray-300 rounded-md overflow-hidden bg-white hover:border-gray-400 focus-within:border-primary transition-colors duration-200">
           
           {/* Category Dropdown - Desktop Only */}
-          <div className="relative hidden md:block">
+          <div className="relative hidden md:flex items-center border-r border-gray-300">
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-2 px-5 py-3.5 text-sm font-medium text-gray-700 hover:text-primary transition-colors border-r border-gray-200 whitespace-nowrap group"
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap bg-white"
             >
               <span className="max-w-[120px] truncate">{selectCategory}</span>
               <svg
@@ -50,16 +48,16 @@ export default function HeaderSearchBar({ categories, name, phone }: any) {
               <>
                 {/* Backdrop */}
                 <div
-                  className="fixed inset-0 z-10"
+                  className="fixed inset-0 z-[60]"
                   onClick={() => setIsOpen(false)}
                 />
                 
                 {/* Menu */}
-                <div className="absolute top-11 left-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-9999 max-h-96 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="py-2">
+                <div className="absolute top-full left-0 mt-1 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-[70] max-h-96 overflow-auto">
+                  <div className="py-1">
                     <button
                       type="button"
-                      className="block w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-primary hover:text-white transition-colors duration-150 z-999"
+                      className="block w-full px-4 py-2.5 text-left text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors duration-150"
                       onClick={() => {
                         setSelectCategory("All Categories");
                         setIsOpen(false);
@@ -75,7 +73,7 @@ export default function HeaderSearchBar({ categories, name, phone }: any) {
                       >
                         <button
                           type="button"
-                          className="block w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-primary hover:text-white transition-colors duration-150 capitalize"
+                          className="block w-full px-4 py-2.5 text-left text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors duration-150 capitalize"
                           onClick={() => setSelectCategory(category.name)}
                         >
                           {category.name}
@@ -95,32 +93,19 @@ export default function HeaderSearchBar({ categories, name, phone }: any) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for products..."
-              className="w-full px-5 py-3.5 text-gray-900 bg-transparent outline-none text-sm placeholder:text-gray-400"
+              className="w-full h-full px-4 py-2.5 text-sm text-gray-900 bg-transparent outline-none placeholder:text-gray-400"
             />
           </div>
 
           {/* Search Button */}
           <button
             type="submit"
-            className="px-6 py-3.5 bg-primary text-white hover:bg-primary/90 transition-all duration-300 flex items-center gap-2 group rounded-tr-full rounded-br-full"
+            className="px-6 bg-primary text-white hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center"
           >
-            <Search className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-            <span className="hidden xl:inline text-sm font-semibold">Search</span>
+            <Search className="w-5 h-5" />
           </button>
         </div>
       </form>
-
-      {/* Contact Info - Mobile */}
-      <div className="md:hidden mt-3 flex items-center justify-center gap-2 text-sm bg-gray-50 rounded-lg py-2 px-4">
-        <Phone className="w-4 h-4 text-primary" />
-        <span className="text-gray-600">Hotline:</span>
-        <a
-          href={`tel:${hotlineNumber}`}
-          className="text-primary font-semibold hover:underline"
-        >
-          {phone}
-        </a>
-      </div>
     </div>
   );
 }
