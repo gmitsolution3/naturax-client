@@ -48,7 +48,7 @@ export const MenuNavbar = ({ categories }: any) => {
               <Link href="/">
                 <button
                   onClick={() => handleClick("home")}
-                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase"
+                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase whitespace-nowrap"
                 >
                   <span
                     className={
@@ -73,7 +73,7 @@ export const MenuNavbar = ({ categories }: any) => {
               <Link href="/shop/all">
                 <button
                   onClick={() => handleClick("all")}
-                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase"
+                  className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group uppercase whitespace-nowrap"
                 >
                   <span
                     className={
@@ -100,7 +100,7 @@ export const MenuNavbar = ({ categories }: any) => {
                   <Link href={`/shop/${category._id}`}>
                     <button
                       onClick={() => handleClick(category._id)}
-                      className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group capitalize uppercase"
+                      className="relative p-2 text-sm font-normal text-gray-700 hover:text-primary transition-colors duration-200 group capitalize uppercase whitespace-nowrap"
                     >
                       <span
                         className={
