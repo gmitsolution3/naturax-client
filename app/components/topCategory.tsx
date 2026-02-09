@@ -67,7 +67,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                   >
                     <div
                       key={cat._id}
-                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-48 h-48 md:w-60 md:h-60"
+                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-48 h-48 "
                     >
                       {/* Icon */}
                       {cat.image ? (
@@ -78,7 +78,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                             priority
                             width={300}
                             height={300}
-                            className="w-[600px] h-[300px] object-cover group-hover:scale-[110%] duration-300"
+                            className="w-[300px] h-[200px] object-cover group-hover:scale-[110%] duration-300"
                           />
                         </div>
                       ) : (

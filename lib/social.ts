@@ -5,5 +5,6 @@ export const getBrandInfo = async () => {
       next: { revalidate: 60 },
     }
   );
+  
   return res.json();
 };

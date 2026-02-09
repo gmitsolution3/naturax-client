@@ -38,8 +38,6 @@ const ShowFooter: React.FC = async () => {
     address: brandInfoRaw?.data?.address ?? "Dhaka, Bangladesh",
   };
 
-
-
   const quickLinks: FooterLink[] = [
     { label: "Home", url: "#" },
     { label: "Shop", url: "#" },
@@ -72,35 +70,34 @@ const ShowFooter: React.FC = async () => {
   ];
 
   return (
-    <footer className="bg-linear-to-b from-gray-900 via-slate-800 to-gray-900 text-gray-100">
+    <footer className="bg-secondary !text-white border-t border-gray-200">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-        {/* 4 Column Layout - Company Info + 3 Menu Sections */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-          {/* Column 1: Company Description */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        {/* 4 Column Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Column 1: Company Info */}
           <div className="lg:col-span-1">
-            <div className="mb-4">
+            <div className="mb-5">
               <ComLogo />
             </div>
-            <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-6">
+            <p className="text-white text-sm leading-relaxed mb-6">
               Your trusted online destination for quality products and
-              exceptional service. We're committed to delivering excellence in
-              every interaction.
+              exceptional service.
             </p>
 
-            {/* Contact Info */}
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <MapPin size={20} className="text-primary shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-sm">{brandInfo.address}</p>
+            {/* Contact Info - WoodMart Style */}
+            <div className="space-y-2.5">
+              <div className="flex items-start gap-2.5">
+                <MapPin size={16} className="text-white shrink-0 mt-1" />
+                <p className="text-white text-sm">{brandInfo.address}</p>
               </div>
-              <div className="flex items-start gap-3">
-                <Phone size={20} className="text-primary shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-sm">{brandInfo.phone}</p>
+              <div className="flex items-start gap-2.5">
+                <Phone size={16} className="text-white shrink-0 mt-1" />
+                <p className="text-white text-sm">{brandInfo.phone}</p>
               </div>
-              <div className="flex items-start gap-3">
-                <Mail size={20} className="text-primary shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-sm break-all">
+              <div className="flex items-start gap-2.5">
+                <Mail size={16} className="text-white shrink-0 mt-1" />
+                <p className="text-white text-sm break-all">
                   {brandInfo.email}
                 </p>
               </div>
@@ -109,15 +106,15 @@ const ShowFooter: React.FC = async () => {
 
           {/* Column 2: Quick Links */}
           <div className="sm:col-span-1">
-            <h4 className="text-lg md:text-xl font-bold text-white mb-6 pb-2 border-b-2 border-primary">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Quick Links
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {quickLinks.map((link: FooterLink, idx: number) => (
                 <li key={idx}>
                   <a
                     href={link.url}
-                    className="text-gray-300 hover:text-primary transition-colors duration-300 text-sm md:text-base"
+                    className="text-white transition-colors duration-200 text-sm inline-block"
                   >
                     {link.label}
                   </a>
@@ -128,15 +125,15 @@ const ShowFooter: React.FC = async () => {
 
           {/* Column 3: About */}
           <div className="sm:col-span-1">
-            <h4 className="text-lg md:text-xl font-bold text-white mb-6 pb-2 border-b-2 border-primary">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               About
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {aboutLinks.map((link: FooterLink, idx: number) => (
                 <li key={idx}>
                   <Link
                     href={link.url}
-                    className="text-gray-300 hover:text-primary transition-colors duration-300 text-sm md:text-base"
+                    className="text-white transition-colors duration-200 text-sm inline-block"
                   >
                     {link.label}
                   </Link>
@@ -147,15 +144,15 @@ const ShowFooter: React.FC = async () => {
 
           {/* Column 4: Support */}
           <div className="sm:col-span-1">
-            <h4 className="text-lg md:text-xl font-bold text-white mb-6 pb-2 border-b-2 border-primary">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Support
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {supportLinks.map((link: FooterLink, idx: number) => (
                 <li key={idx}>
                   <Link
                     href={link.url}
-                    className="text-gray-300 hover:text-primary transition-colors duration-300 text-sm md:text-base"
+                    className="text-white transition-colors duration-200 text-sm inline-block"
                   >
                     {link.label}
                   </Link>
@@ -166,38 +163,44 @@ const ShowFooter: React.FC = async () => {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="border-t border-gray-700"></div>
+      {/* Bottom Section - WoodMart Style */}
+      <div className="border-t border-gray-200 bg-primary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+            {/* Copyright */}
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <p className="text-white text-sm">
+                © {currentYear} Your Brand. All rights reserved.
+              </p>
+            </div>
 
-      {/* Bottom Section - Social Links & Copyright */}
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            <p className="text-gray-300 text-sm md:text-base">Follow us:</p>
-            <div className="flex gap-4">
+            {/* Payment Methods */}
+            <div className="order-1 lg:order-2">
+              <img
+                src="https://i.postimg.cc/8ctcRTKS/SSLCommerz-Pay-With-logo-All-Size-01-2048x330-removebg-preview.png"
+                alt="Payment Methods"
+                className="h-12 object-contain"
+              />
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3 order-3">
               <SocialIcons socials={brandInfo.socials} />
             </div>
           </div>
-          <div>
-            <img
-              src="https://i.postimg.cc/8ctcRTKS/SSLCommerz-Pay-With-logo-All-Size-01-2048x330-removebg-preview.png"
-              alt="sslComerz"
-            />
-          </div>
 
-          {/* Copyright */}
-          <div className="text-center md:text-right">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} Your Brand. All rights reserved.
-            </p>
-            <p className="text-gray-500 text-xs mt-1">
-              Designed & Developed with{" "}
-              <span className="hover:text-white">
-                <a href="https://www.gmitsolution.net" target="_blank">
-                  GM IT Solution
-                </a>
-              </span>
+          {/* Developer Credit */}
+          <div className="text-center mt-4 pt-4 border-t border-gray-200">
+            <p className="text-white text-xs">
+              Designed & Developed by{" "}
+              <a
+                href="https://www.gmitsolution.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white-700 hover:text-white-900 font-medium transition-colors"
+              >
+                GM IT Solution
+              </a>
             </p>
           </div>
         </div>

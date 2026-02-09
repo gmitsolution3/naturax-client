@@ -18,6 +18,8 @@ export async function getMarquee() {
       cache: "no-store"
     }
   );
+
+  console.log(response)
   return response.json();
 }
 

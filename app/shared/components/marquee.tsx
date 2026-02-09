@@ -10,7 +10,7 @@ const MarqueeText: React.FC<MarqueeTextProps> = ({
   speed = 25,
 }) => {
   return (
-    <div className="w-full overflow-hidden bg-gradient-to-r from-pink-600 via-pink-600 to-pink-700 text-white py-2">
+    <div className="w-full overflow-hidden bg-secondary text-white py-2">
       <div 
         className="flex whitespace-nowrap"
         style={{

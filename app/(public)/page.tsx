@@ -89,3 +89,5 @@ const MainPage = async () => {
 };
 
 export default MainPage;
+
+
