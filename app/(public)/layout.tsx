@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Crab Fashion BD",
-  description: "Build your trust",
+  title: "Naturax",
+  description: "Back To Nature",
 };
 
 export default function RootLayout({

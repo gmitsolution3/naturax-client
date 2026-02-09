@@ -50,7 +50,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
           <div>
             <h2 className="text-xl lg:text-4xl font-bold pl-4 text-center uppercase font-semibold mb-5">Top Categories</h2>
           </div>
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap flex-row items-center justify-start lg:justify-center gap-4">
             {categories
               .slice(0, 5)
               .sort((a, b) => a.order - b.order)
@@ -67,7 +67,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                   >
                     <div
                       key={cat._id}
-                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-48 h-48 "
+                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-24 h-24 lg:w-48 lg:h-48 "
                     >
                       {/* Icon */}
                       {cat.image ? (
@@ -78,7 +78,7 @@ export const TopCategories = ({ categories }: TopCategoriesProps) => {
                             priority
                             width={300}
                             height={300}
-                            className="w-[300px] h-[200px] object-cover group-hover:scale-[110%] duration-300"
+                            className="w-[150px] lg:w-[300px] lg:h-[200px] object-cover group-hover:scale-[110%] duration-300"
                           />
                         </div>
                       ) : (
