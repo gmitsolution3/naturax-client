@@ -86,7 +86,7 @@ export default function Dashboard({ result }: any) {
             trend={null}
           />
           <MetricCard
-            title="Total Purchase"
+            title="Total Admin Purchase"
             value={`$${(data?.totalOverallPurchase || 0).toLocaleString(
               "en-US",
               { minimumFractionDigits: 2 }
