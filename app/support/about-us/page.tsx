@@ -33,7 +33,7 @@ export default function AboutUsPage() {
             <Crown className="w-8 h-8 text-rose-600" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-             About CRAB Fashion
+            About CRAB Fashion
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             A premium clothing brand crafted for those who value style, quality,
@@ -231,7 +231,7 @@ export default function AboutUsPage() {
               },
               {
                 name: "ABDUL HALIM",
-                role: "MD",
+                role: "Managing Director",
                 phone: "01787246224",
                 img: "https://i.postimg.cc/mg0g33kv/Whats-App-Image-2026-01-27-at-4-33-03-PM.jpg",
               },

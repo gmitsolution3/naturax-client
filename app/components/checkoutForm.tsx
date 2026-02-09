@@ -40,7 +40,7 @@ export default function CheckoutForm() {
     streetAddress: "",
     city: "",
     region: "",
-    postalCode: "",
+    // postalCode: "",
     promoCode: "",
   });
 
@@ -134,7 +134,7 @@ export default function CheckoutForm() {
         street: formData.streetAddress,
         city: formData.city,
         region: formData.region,
-        postalCode: formData.postalCode,
+        // postalCode: formData.postalCode,
       },
       products: cartItems.map((item) => ({
         productTitle: item.title,
@@ -175,7 +175,6 @@ export default function CheckoutForm() {
 
         router.push("/");
 
-        console.log({response: response.data})
         // if (paymentMethod === "sslcommerz" && response.data.paymentUrl) {
         //   window.location.replace(response.data.paymentUrl);
         // } else {
@@ -247,8 +246,8 @@ export default function CheckoutForm() {
                           defaultValue="BD"
                         >
                           <option>BD</option>
-                          <option>US</option>
-                          <option>UK</option>
+                          {/* <option>US</option>
+                          <option>UK</option> */}
                         </select>
                         <Input
                           type="tel"
@@ -285,50 +284,6 @@ export default function CheckoutForm() {
                 <div className="space-y-4">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Street Name & House Number{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      type="text"
-                      name="streetAddress"
-                      placeholder="Enter"
-                      value={formData.streetAddress}
-                      onChange={handleInputChange}
-                      className="w-full border-gray-300 bg-gray-50"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        City
-                      </label>
-                      <Input
-                        type="text"
-                        name="city"
-                        placeholder="Enter"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        className="w-full border-gray-300 bg-gray-50"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Postal Code
-                      </label>
-                      <Input
-                        type="text"
-                        name="postalCode"
-                        placeholder="Enter Your Postal Code"
-                        value={formData.postalCode}
-                        onChange={handleInputChange}
-                        className="w-full border-gray-300 bg-gray-50"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
                       Select Region
                     </label>
                     <select
@@ -347,6 +302,50 @@ export default function CheckoutForm() {
                       <option value="barishal">Barishal</option>
                       <option value="mymensingh">Mymensingh</option>
                     </select>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        City
+                      </label>
+                      <Input
+                        type="text"
+                        name="city"
+                        placeholder="Enter"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        className="w-full border-gray-300 bg-gray-50"
+                      />
+                    </div>
+                    {/* <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Postal Code
+                      </label>
+                      <Input
+                        type="text"
+                        name="postalCode"
+                        placeholder="Enter Your Postal Code"
+                        value={formData.postalCode}
+                        onChange={handleInputChange}
+                        className="w-full border-gray-300 bg-gray-50"
+                      />
+                    </div> */}
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      House Number, Thana{" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      name="streetAddress"
+                      placeholder="Enter"
+                      value={formData.streetAddress}
+                      onChange={handleInputChange}
+                      className="w-full border-gray-300 bg-gray-50"
+                    />
                   </div>
                 </div>
               </div>
@@ -405,13 +404,13 @@ export default function CheckoutForm() {
                       value="outside"
                       checked={deliveryMethod === "outside"}
                       onChange={(e) => setDeliveryMethod(e.target.value)}
-                      className="h-4 w-4"
+                      className="h-4 w-4" 
                     />
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">Outside Dhaka</p>
                       <p className="text-xs text-gray-500">3-4 Days</p>
                     </div>
-                    <span className="font-semibold text-gray-900">৳100.00</span>
+                    <span className="font-semibold text-gray-900">৳130.00</span>
                   </label>
                 </div>
               </div>

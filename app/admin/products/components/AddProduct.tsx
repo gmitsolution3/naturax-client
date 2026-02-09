@@ -5,6 +5,7 @@ import { Upload, X, Plus, Trash2, Save, Eye, EyeOff } from "lucide-react";
 import { UploadeImage } from "@/app/components/uploadeImage";
 import { PreviewImages, ProductFormData } from "@/utils/product";
 import { toast } from "sonner";
+import DescriptionEditor from "./DescriptionEditor";
 
 // interface CategoryProps {
 //   allCategory:
@@ -17,6 +18,7 @@ export default function AddProductForm({ allCategory }: any) {
     description: "",
     shortDescription: "",
     basePrice: "",
+    purchase: "",
     discount: { type: "percentage", value: "" },
     sku: "",
     stockQuantity: "",
@@ -91,10 +93,11 @@ export default function AddProductForm({ allCategory }: any) {
   // Auto generate slug
   const generateSlug = (title: string) => {
     return title
-      .toLowerCase()
+      .normalize("NFC") // 🔥 Fix Bangla combining chars
       .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-");
+      .replace(/[^\p{Script=Bengali}\p{L}\p{N}\s-]/gu, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
   };
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -345,7 +348,6 @@ export default function AddProductForm({ allCategory }: any) {
       if (field === "thumbnail") {
         return formData.thumbnail !== null || previewImages.thumbnail !== null;
       }
-
       // normal string check
       const value = formData[field as keyof ProductFormData];
       return value !== "" && value !== null;
@@ -452,7 +454,7 @@ export default function AddProductForm({ allCategory }: any) {
                 <label className="block text-sm font-medium text-gray-900 mb-2">
                   Full Description
                 </label>
-                <textarea
+                {/* <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
@@ -460,6 +462,12 @@ export default function AddProductForm({ allCategory }: any) {
                   placeholder="Detailed product description"
                   rows={5}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                /> */}
+                <DescriptionEditor
+                  value={formData.description}
+                  onChange={(val) =>
+                    setFormData((prev) => ({ ...prev, description: val }))
+                  }
                 />
               </div>
 
@@ -484,28 +492,6 @@ export default function AddProductForm({ allCategory }: any) {
                     ))}
                   </select>
                 </div>
-                {/* sub category */}
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Sub Category
-                  </label>
-                
-                  <select
-                    name="subCategoryId"
-                    value={formData.subCategoryId}
-                    onChange={handleSubCategoryChange}
-                    disabled={!selectedCategory}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  >
-                    <option value="">Select a sub-category</option>
-
-                    {selectedCategory?.subCategories?.map((sub: any) => (
-                      <option key={sub.id} value={sub.id}>
-                        {sub.name}
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
               </div>
 
               <div>
@@ -556,20 +542,37 @@ export default function AddProductForm({ allCategory }: any) {
           {/* PRICING */}
           {activeTab === "pricing" && (
             <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
-                  Base Price (৳) *
-                </label>
-                <input
-                  type="number"
-                  name="basePrice"
-                  value={formData.basePrice}
-                  onChange={handleInputChange}
-                  placeholder="0.00"
-                  step="0.01"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  required
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Base Price (৳) *
+                  </label>
+                  <input
+                    type="number"
+                    name="basePrice"
+                    value={formData.basePrice}
+                    onChange={handleInputChange}
+                    placeholder="0.00"
+                    step="0.01"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Purchase price (৳) *
+                  </label>
+                  <input
+                    type="number"
+                    name="purchase"
+                    value={formData.purchase}
+                    onChange={handleInputChange}
+                    placeholder="0.00"
+                    step="0.01"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="space-y-4">

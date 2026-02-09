@@ -28,12 +28,6 @@ const GeneralSection = async () => {
 
   const mainSlider = { id: "main", images: toArray(mainBanner) };
 
-  // if (!result.success) {
-  //   return (
-  //     <div className="min-w-full mx-auto">Failed to load banner data.</div>
-  //   );
-  // }
-
   return (
     <div className="space-y-10">
       <div>

@@ -6,6 +6,7 @@ import { Banner } from "./banner";
 import ProductSliderSection, {
   ProductSliderSectionProps,
 } from "@/app/components/heroSlider";
+import MarqueeForm from "./marquee";
 
 export const Controller = ({
   mainSlider,
@@ -28,19 +29,21 @@ export const Controller = ({
         {/* Tabs */}
         <div className="border-b border-gray-200 mb-6">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-            {["Brand Info", "Banner", "Banner Preview"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setSelected(tab)}
-                className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm hover:cursor-pointer ${
-                  selected === tab
-                    ? "border-primary text-primary"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+            {["Brand Info", "Marquee", "Banner", "Banner Preview"].map(
+              (tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setSelected(tab)}
+                  className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm hover:cursor-pointer ${
+                    selected === tab
+                      ? "border-primary text-primary"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ),
+            )}
           </nav>
         </div>
         {/* Content based on selected tab */}
@@ -50,12 +53,17 @@ export const Controller = ({
               <BrandForm />
             </div>
           )}
+          {selected === "Marquee" && (
+            <div>
+              <MarqueeForm />
+            </div>
+          )}
           {selected === "Banner" && (
             <div>
               <Banner />
             </div>
           )}
-          
+
           {selected === "Banner Preview" && (
             <div>
               <ProductSliderSection

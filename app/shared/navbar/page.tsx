@@ -1,19 +1,17 @@
 import { ComLogo } from "../components/ComLogo";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import { BookCard } from "../components/BookCard";
-import { getCategories } from "@/lib/categories";
+import { getCategories, getMarquee } from "@/lib/categories";
 import { MenuNavbar } from "../components/Menu";
 import MarqueeText from "../components/marquee";
 import { getBrandInfo } from "@/lib/social";
-import Link from "next/link";
 import { NavBarMenu } from "../components/navBarMenu";
 import AccountDropdown from "../components/AccountDropdown";
 
-
 const Navbar = async () => {
   const getAllCategories = await getCategories();
-
   const brandInfoRaw = await getBrandInfo();
+  const marqueeText = await getMarquee();
 
   const brandInfo = {
     logo: brandInfoRaw?.data?.logo ?? "/placeholder.svg",
@@ -23,37 +21,50 @@ const Navbar = async () => {
   };
 
   return (
-    <header className="w-full bg-white">
-      <div className="max-w-full bg-white">
-        <div className="border-b border-gray-100 bg-linear-to-r from-primary-foreground to-primary ">
-          <div className="h-14 max-w-400 mx-auto px-4 flex justify-between items-center text-white">
-            <h5>Welcome to our website</h5>
+    <header className="w-full bg-white sticky top-0 z-50 shadow-sm">
+      {/* Top Promotional Banner */}
+      <MarqueeText text={marqueeText.data.text} />
+
+      {/* Main Header */}
+      <div className="bg-white">
+        <div className="mx-auto px-4 lg:px-6">
+          <div className="flex items-center justify-between gap-4">
+            
+            {/* Logo */}
             <div>
-              <NavBarMenu />
+              <MenuNavbar categories={getAllCategories.data} />
             </div>
-            <div className="block md:hidden">
-              <AccountDropdown />
+
+            {/* Center Section - Search Bar (Desktop) */}
+            <div className="hidden text-center lg:flex flex-1 w-full mx-auto mx-8">
+              <ComLogo />
+            </div>
+
+            {/* Right Section - Nav Menu & Cart */}
+            <div className="flex items-center justify-end gap-4 lg:gap-6 basis-2/5">
+              {/* Desktop Navigation Menu */}
+              <div className="hidden lg:block">
+                <NavBarMenu />
+              </div>
+
+              {/* Mobile Account Dropdown */}
+              <div className="lg:hidden">
+                <AccountDropdown />
+              </div>
+
+              {/* Shopping Cart */}
+              <BookCard />
             </div>
           </div>
-        </div>
-        <div className="border-b border-gray-300">
-          <div className="max-w-7xl mx-auto px-4 flex flex-row gap-4 lg:gap-0 justify-between items-center py-5">
-            <ComLogo />
-            <div className="hidden md:block">
-              <HeaderSearchBar
-                categories={getAllCategories.data}
-                name={brandInfo.name}
-                phone={brandInfo.phone}
-              />
-            </div>
-            <BookCard />
+
+          {/* Mobile Search Bar */}
+          <div className="lg:hidden pb-4">
+            <HeaderSearchBar
+              categories={getAllCategories.data}
+              name={brandInfo.name}
+              phone={brandInfo.phone}
+            />
           </div>
-        </div>
-        <div className="bg-white border-b border-gray-300 shadow-md">
-          <MenuNavbar categories={getAllCategories.data} />
-        </div>
-        <div className="bg-white border-b border-gray-300 shadow-md">
-          <MarqueeText />
         </div>
       </div>
     </header>

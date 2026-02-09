@@ -1,5 +1,4 @@
 import { getFeaturedProduct } from "@/lib/products";
-import React from "react";
 import ProductCarousel from "./productCarousel";
 
 export const FeaturedProduct = async () => {

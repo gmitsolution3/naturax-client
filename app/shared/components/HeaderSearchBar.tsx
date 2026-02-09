@@ -1,99 +1,111 @@
-// components/HeaderSearchBar.tsx
-
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Search, Phone } from "lucide-react"; // optional: lucide icons
+import { Search } from "lucide-react";
 import Link from "next/link";
 
 export default function HeaderSearchBar({ categories, name, phone }: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectCategory, setSelectCategory] = useState<string>("Categories");
+  const [selectCategory, setSelectCategory] = useState<string>("All Categories");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Searching for:", searchQuery, "in", selectCategory);
   };
 
-  const hotlineNumber = phone || "(12) 345 67895";
-
   return (
-    <div className="flex flex-col md:flex-row items-center gap-4 w-full">
-      {/* Search Bar */}
-      <div className="mx-4">
-        <div className="relative flex items-center gap-2">
-          {/* Search Input */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full md:w-72 px-4 py-2 text-gray-900 border bg-gray-100 border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary outline-none rounded-l-2xl"
-            />
-          </div>
-
-          {/* Categories Dropdown */}
-          <div className="relative">
+    <div className="w-full">
+      {/* Search Form */}
+      <form onSubmit={handleSearch} className="w-full">
+        <div className="flex items-stretch border border-gray-300 rounded-md overflow-hidden bg-white hover:border-gray-400 focus-within:border-primary transition-colors duration-200">
+          
+          {/* Category Dropdown - Desktop Only */}
+          <div className="relative hidden md:flex items-center border-r border-gray-300">
             <button
-              onClick={toggleDropdown}
-              className="flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 hover:bg-gray-200 min-w-40"
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap bg-white"
             >
-              <span>{selectCategory ?? "Categories"}</span>
-              {isOpen ? (
-                <ChevronUp className="w-4 h-4 ml-2" />
-              ) : (
-                <ChevronDown className="w-4 h-4 ml-2" />
-              )}
+              <span className="max-w-[120px] truncate">{selectCategory}</span>
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </button>
 
             {/* Dropdown Menu */}
             {isOpen && (
-              <div className="absolute left-0 z-10 w-56 mt-2 origin-top-left bg-white border border-gray-200 rounded-md shadow-lg">
-                <div className="py-1">
-                  {categories.map((category: any, index: number) => (
-                    <Link href={`/shop/${category._id}`}>
-                      <button
-                        key={index}
-                        className="block w-full px-4 py-2 text-sm text-left text-gray-700 font-semibold hover:cursor-pointer hover:text-white hover:bg-primary"
-                        onClick={() => {
-                          setIsOpen(false);
-                          setSelectCategory(category.name);
-                        }}
+              <>
+                {/* Backdrop */}
+                <div
+                  className="fixed inset-0 z-[60]"
+                  onClick={() => setIsOpen(false)}
+                />
+                
+                {/* Menu */}
+                <div className="absolute top-full left-0 mt-1 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-[70] max-h-96 overflow-auto">
+                  <div className="py-1">
+                    <button
+                      type="button"
+                      className="block w-full px-4 py-2.5 text-left text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+                      onClick={() => {
+                        setSelectCategory("All Categories");
+                        setIsOpen(false);
+                      }}
+                    >
+                      All Categories
+                    </button>
+                    {categories?.map((category: any) => (
+                      <Link
+                        href={`/shop/${category._id}`}
+                        key={category._id}
+                        onClick={() => setIsOpen(false)}
                       >
-                        {category.name}
-                      </button>
-                    </Link>
-                  ))}
+                        <button
+                          type="button"
+                          className="block w-full px-4 py-2.5 text-left text-sm font-normal text-gray-700 hover:bg-gray-50 transition-colors duration-150 capitalize"
+                          onClick={() => setSelectCategory(category.name)}
+                        >
+                          {category.name}
+                        </button>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
 
+          {/* Search Input */}
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for products..."
+              className="w-full h-full px-4 py-2.5 text-sm text-gray-900 bg-transparent outline-none placeholder:text-gray-400"
+            />
+          </div>
+
           {/* Search Button */}
-          <button className="px-3 py-2.5 text-gray-500 bg-gray-100 rounded-r-2xl hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 hover:cursor-pointer hover:text-white border border-gray-300">
+          <button
+            type="submit"
+            className="px-6 bg-primary text-white hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center"
+          >
             <Search className="w-5 h-5" />
           </button>
         </div>
-      </div>
-
-      {/* Call Us Now */}
-      <div className="flex items-center space-x-2 ml-3 md:ml-8 lg:ml-11">
-        <div className="p-3 rounded-full bg-gray-100">
-          <a
-            href={`tel:${hotlineNumber}`}
-            aria-label={`Call our hotline at ${hotlineNumber}`}
-          >
-            <Phone className="w-5 h-5 text-primary" />
-          </a>
-        </div>
-        <div className="text-sm md:text-lg font-medium text-gray-800">
-          {`${name} Hotline`} <br />
-          <a
-            href={`tel:${hotlineNumber}`}
-            aria-label={`Call our hotline at ${hotlineNumber}`}
-          >
-            <span className="text-primary">{phone}</span>
-          </a>
-        </div>
-      </div>
+      </form>
     </div>
   );
 }

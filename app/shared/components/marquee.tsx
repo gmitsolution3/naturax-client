@@ -2,27 +2,31 @@
 
 interface MarqueeTextProps {
   text?: string;
-  speed?: number; // seconds, default 20s
+  speed?: number;
 }
 
 const MarqueeText: React.FC<MarqueeTextProps> = ({
-  text = "🔥 ফ্রি ডেলিভারি সারা বাংলাদেশে | ক্যাশ অন ডেলিভারি | ৭ দিনের রিটার্ন গ্যারান্টি | ১০০% অরিজিনাল প্রোডাক্ট 🔥",
-  speed = 20,
+  text = "Lingerie spring sale for all bras Discount 30%",
+  speed = 25,
 }) => {
   return (
-    <div className="w-full overflow-hidden bg-primary text-white py-2">
-      <div className="flex animate-marquee">
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+    <div className="w-full overflow-hidden bg-gradient-to-r from-pink-600 via-pink-600 to-pink-700 text-white py-2">
+      <div 
+        className="flex whitespace-nowrap"
+        style={{
+          animation: `marquee ${speed}s linear infinite`,
+        }}
+      >
+        <span className="inline-block text-sm font-normal italic px-8">
           {text}
         </span>
-
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm font-normal italic px-8">
           {text}
         </span>
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm font-normal italic px-8">
           {text}
         </span>
-        <span className="whitespace-nowrap text-sm md:text-base font-medium px-4">
+        <span className="inline-block text-sm font-normal italic px-8">
           {text}
         </span>
       </div>
@@ -35,11 +39,6 @@ const MarqueeText: React.FC<MarqueeTextProps> = ({
           100% {
             transform: translateX(-50%);
           }
-        }
-
-        .animate-marquee {
-          display: flex;
-          animation: marquee 20s linear infinite;
         }
       `}</style>
     </div>

@@ -4,6 +4,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { User, ShoppingBag, RotateCcw, LogOut, ChevronDown, Heart } from "lucide-react";
 
 export default function AccountDropdown() {
   const { user, isAuthenticated, logout, loading } = useAuth();
@@ -19,85 +20,139 @@ export default function AccountDropdown() {
 
   return (
     <div className="relative">
-      {/* Toggle button */}
+      
+      {/* Toggle Button */}
       {!isAuthenticated ? (
         <button
           onClick={() => setOpen((prev) => !prev)}
-          className="cursor-pointer border px-3 py-2 text-sm rounded-lg font-bold bg-primary text-white hover:bg-[#d9720f] transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
         >
-          My Account
+          <User className="w-5 h-5 text-gray-700" />
+          <ChevronDown
+            className={`w-4 h-4 text-gray-700 transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
         </button>
       ) : (
-        <div
-          className="w-10 h-10 rounded-full bg-[#b36211] flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#97520d] transition-colors"
+        <button
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
           onClick={() => setOpen((prev) => !prev)}
         >
-          {user?.name?.charAt(0).toUpperCase() || "U"}
-        </div>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white text-sm font-bold">
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </div>
+          <ChevronDown
+            className={`w-4 h-4 text-gray-700 transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </button>
       )}
 
       {/* Dropdown Menu */}
       {open && (
-        <div
-          className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-50"
-          onMouseLeave={() => setOpen(false)}
-        >
-          <ul className="flex flex-col divide-y divide-gray-200">
-            {!isAuthenticated && (
-              <>
-                <li>
-                  <Link
-                    href="/auth/sign-in"
-                    className="block px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white rounded-t-lg transition-colors"
-                  >
-                    Log in
-                  </Link>
-                </li>
-                <li>
-                  <button className="w-full text-left px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white transition-colors">
-                    Order Tracking
-                  </button>
-                </li>
-                <li>
-                  <button className="w-full text-left px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white rounded-b-lg transition-colors">
-                    Return Policy
-                  </button>
-                </li>
-              </>
-            )}
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setOpen(false)}
+          />
 
-            {isAuthenticated && (
-              <>
-                <li>
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white rounded-t-lg transition-colors"
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <button className="w-full text-left px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white transition-colors">
-                    Order Tracking
-                  </button>
-                </li>
-                <li>
-                  <button className="w-full text-left px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white transition-colors">
-                    Return Policy
-                  </button>
-                </li>
-                <li>
+          {/* Menu */}
+          <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-100 rounded-lg shadow-xl z-50 overflow-hidden">
+            
+            {!isAuthenticated ? (
+              <div className="py-1">
+                <Link
+                  href="/auth/sign-in"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Sign In</span>
+                </Link>
+                
+                <Link
+                  href="/order-tracking"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Order Tracking</span>
+                </Link>
+                
+                <Link
+                  href="/return-policy"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Return Policy</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="py-1">
+                
+                {/* User Info Header */}
+                <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white font-bold">
+                      {user?.name?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-gray-900 truncate">
+                        {user?.name || "User"}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user?.email || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <User className="w-4 h-4" />
+                  <span>My Profile</span>
+                </Link>
+                
+                <Link
+                  href="/order-tracking"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Order Tracking</span>
+                </Link>
+                
+                <Link
+                  href="/return-policy"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-all duration-150"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Return Policy</span>
+                </Link>
+
+                {/* Logout */}
+                <div className="border-t border-gray-100 mt-1">
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 font-bold text-gray-800 hover:bg-primary hover:text-white rounded-b-lg border-t border-gray-200 transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-150"
                   >
-                    Logout
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
                   </button>
-                </li>
-              </>
+                </div>
+              </div>
             )}
-          </ul>
-        </div>
+          </div>
+        </>
       )}
     </div>
   );

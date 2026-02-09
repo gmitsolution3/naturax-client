@@ -12,6 +12,15 @@ export async function getCategories() {
   return res.json();
 }
 
+export async function getMarquee() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_SERVER_BASE_URL}/marquee/get-marquee`,{
+      cache: "no-store"
+    }
+  );
+  return response.json();
+}
+
 export async function addCategories(data: CategoryFormData) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_SERVER_BASE_URL}/create-category`,

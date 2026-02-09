@@ -41,50 +41,64 @@ interface TopCategoriesProps {
 export const TopCategories = ({ categories }: TopCategoriesProps) => {
   return (
     <section className="py-8 px-4 md:px-8 lg:px-16">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-        Top Categories
-      </h2>
       {!categories || categories.length === 0 ? (
         <div className="text-2xl text-center text-primary">
           No Category found
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          {categories.map((cat, index) => {
-            // Pick a random icon for each category (based on index to keep consistent)
-            const IconComponent = iconList[index % iconList.length];
+        <div>
+          <div>
+            <h2 className="text-xl lg:text-4xl font-bold pl-4 text-center uppercase font-semibold mb-5">Top Categories</h2>
+          </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+            {categories
+              .slice(0, 5)
+              .sort((a, b) => a.order - b.order)
+              .map((cat, index) => {
+                // Pick a random icon for each category (based on index to keep consistent)
+                const IconComponent =
+                  iconList[index % iconList.length];
 
-            return (
-              <Link href={`/shop/${cat._id}`} key={cat._id}>
-                <div
-                  key={cat._id}
-                  className="flex flex-col items-center justify-center gap-2 p-4 bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer text-center"
-                >
-                  {/* Icon */}
-                  {cat.image ? (
-                    <div>
-                      <Image
-                        src={cat?.image}
-                        alt={cat.name}
-                        priority
-                        width={100}
-                        height={50}
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
-                      <IconComponent size={28} className="text-primary" />
-                    </div>
-                  )}
+                return (
+                  <Link
+                    href={`/shop/${cat._id}`}
+                    key={cat._id}
+                    className={`h-full rounded-full`}
+                  >
+                    <div
+                      key={cat._id}
+                      className="flex flex-col items-center justify-center bg-white rounded-full shadow hover:shadow-xl transition cursor-pointer text-center relative group overflow-hidden w-48 h-48 md:w-60 md:h-60"
+                    >
+                      {/* Icon */}
+                      {cat.image ? (
+                        <div className="w-full">
+                          <Image
+                            src={cat?.image}
+                            alt={cat.name}
+                            priority
+                            width={300}
+                            height={300}
+                            className="w-[600px] h-[300px] object-cover group-hover:scale-[110%] duration-300"
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-[#ebdfd4] rounded-full p-3 mb-2">
+                          <IconComponent
+                            size={28}
+                            className="text-primary"
+                          />
+                        </div>
+                      )}
 
-                  {/* Name */}
-                  <span className="text-sm sm:text-base font-medium text-gray-900">
-                    {cat.name}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+                      {/* Name */}
+                      <span className="text-sm font-medium text-white bg-primary shadow rounded-full p-2 uppercase absolute bottom-0 left-0 right-0">
+                        {cat.name}
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+          </div>
         </div>
       )}
     </section>

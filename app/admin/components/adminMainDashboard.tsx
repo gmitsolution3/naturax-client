@@ -40,6 +40,8 @@ export default function Dashboard({ result }: any) {
     { name: "Cancelled", value: analytics?.cancelled || 0, fill: "#ef4444" },
   ];
 
+  // const crossMargin = analytics.
+
   return (
     <div className="min-h-screen">     
       {/* Header */}
@@ -81,6 +83,15 @@ export default function Dashboard({ result }: any) {
               { minimumFractionDigits: 2 }
             )}`}
             description="Total sales amount"
+            trend={null}
+          />
+          <MetricCard
+            title="Total Purchase"
+            value={`$${(data?.totalOverallPurchase || 0).toLocaleString(
+              "en-US",
+              { minimumFractionDigits: 2 }
+            )}`}
+            description="Total purchase amount"
             trend={null}
           />
           <MetricCard

@@ -26,6 +26,7 @@ export interface ProductFormData {
   description: string;
   shortDescription: string;
   basePrice: string;
+  purchase?: string;
   discount: Discount;
   sku: string;
   stockQuantity: string;

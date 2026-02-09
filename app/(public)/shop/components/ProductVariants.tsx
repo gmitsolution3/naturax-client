@@ -8,6 +8,8 @@ import { CardButtons } from "./cardButtons";
 import { addToCart, getCart } from "@/utils/cartStorage";
 import { toast } from "react-toastify";
 import { fbEvent } from "@/utils/fbPixel";
+import { handleWhatsApp } from "./handleWhatsApp";
+import { ProductFormData } from "@/utils/product";
 
 type Variant = {
   attributes: {
@@ -17,6 +19,7 @@ type Variant = {
   };
   sku: string;
   stock: number;
+  price?: string
 };
 
 interface productDetails {
@@ -33,6 +36,7 @@ type Props = {
   onCloseModal?: () => void;
   onSelectionChange?: ((data: any) => void | undefined) | undefined;
   isBuyNow?: boolean;
+  product: ProductFormData
 };
 
 // function that cover color name to hex code
@@ -69,6 +73,7 @@ export default function ProductVariant({
   onCloseModal,
   onSelectionChange,
   isBuyNow,
+  product,
 }: Props) {
   const router = useRouter();
 
@@ -162,12 +167,7 @@ export default function ProductVariant({
 
   // redirect on the what 's app
   const handleOrderWhatsApp = () => {
-    const phoneNumber = "01706310521"; // replace with your number
-    const message = `I want to order ${quantity} item(s)`;
-    window.open(
-      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
-      "_blank",
-    );
+    handleWhatsApp(quantity);
   };
 
   //   function  normalize
@@ -223,6 +223,24 @@ export default function ProductVariant({
   //   main components
   return (
     <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        {selectedVariant?.price ? (
+          <span className="text-2xl font-bold text-gray-900">
+            {selectedVariant.price}৳
+          </span>
+        ) : (
+          <span className="text-2xl font-bold text-gray-900">
+            {productDetails.productPrice}৳
+          </span>
+        )}
+
+        {product.discount.value && (
+          <span className="text-lg text-red-500 line-through ml-2">
+            {product.basePrice}৳
+          </span>
+        )}
+      </div>
+
       <div className="flex">
         <h2>
           Availability:{" "}
@@ -296,21 +314,21 @@ export default function ProductVariant({
 
       <div className="flex flex-wrap gap-3 mt-4 items-stretch">
         {/* Quantity selector */}
-        <div className="flex items-center border rounded-lg border-gray-400 bg-blue-50">
+        <div className="flex items-center border rounded-lg border-primary">
           <button
             onClick={handleDecrease}
-            className="px-4 py-2 text-xl font-bold hover:bg-gray-100 rounded-l-lg"
+            className="px-4 py-2 text-xl font-bold bg-primary/10 text-primary hover:bg-gray-100 rounded-l-lg"
           >
             <Minus />
           </button>
 
-          <span className="px-6 py-2 border-x border-primary bg-white font-semibold">
+          <span className="px-6 py-2 border-x text-primary border-primary bg-white font-semibold">
             {quantity}
           </span>
 
           <button
             onClick={handleIncrease}
-            className="px-4 py-2 text-xl font-bold hover:bg-gray-100 rounded-r-lg"
+            className="px-4 py-2 text-xl font-bold bg-primary/10 text-primary hover:bg-gray-100 rounded-r-lg"
           >
             <Plus />
           </button>
@@ -321,7 +339,7 @@ export default function ProductVariant({
             {/* Add to cart */}
             <button
               onClick={() => handleAddToCart()}
-              className="flex items-center gap-2 px-4 py-2 border text-primary-foreground border-primary rounded-lg hover:cursor-pointer hover:bg-primary hover:text-white"
+              className="flex items-center gap-2 px-4 py-2 border text-primary border-primary rounded-lg hover:cursor-pointer hover:bg-primary hover:!text-white duration-300"
             >
               <ShoppingCart size={18} /> Add to Cart
             </button>
@@ -338,7 +356,7 @@ export default function ProductVariant({
             {/* Buy Now */}
             <button
               onClick={handleBuyNow}
-              className="px-5 py-2 bg-linear-to-t from-primary to-primary-foreground text-white rounded-lg font-semibold hover:opacity-90 hover:from-primary-foreground hover:cursor-pointer hover:to-primary"
+              className="px-5 py-2 bg-primary text-white rounded-lg font-semibold hover:opacity-90 hover:from-primary-foreground hover:cursor-pointer hover:to-primary w-full mt-3"
             >
               Buy Now
             </button>

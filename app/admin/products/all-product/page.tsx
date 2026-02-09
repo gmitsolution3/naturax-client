@@ -12,6 +12,7 @@ const AllProductShow =async () => {
       subTitle: "Manage your product inventory",
     };
 
+
   return (
     <div>
       <ProductTable

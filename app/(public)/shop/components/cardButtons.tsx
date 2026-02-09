@@ -6,6 +6,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { ProductFormData } from "@/utils/product";
 import ProductVariant from "./ProductVariants";
 import { createPortal } from "react-dom";
+import { handleWhatsApp } from "./handleWhatsApp";
 
 interface Product {
   product: ProductFormData;
@@ -57,7 +58,10 @@ export const CardButtons = ({ product }: Product) => {
           <ShoppingBag /> BUY NOW
         </button>
 
-        <button className="w-full bg-linear-to-t from-primary to-primary-foreground hover:from-primary-foreground hover:to-primary text-white py-3 rounded-lg font-semibold flex items-center justify-center text-xs   md:text-sm gap-2 transition">
+        <button
+          onClick={() => handleWhatsApp()}
+          className="w-full bg-linear-to-t from-green-600 to-green-800 hover:from-green-800 hover:to-green-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center text-xs   md:text-sm gap-2 transition"
+        >
           <FaWhatsapp />
           ORDER VIA WHATSAPP
         </button>
@@ -91,7 +95,7 @@ export const CardButtons = ({ product }: Product) => {
         </button>
       </div>
       {/* Modal */}
-      
+
       {isCartModalOpen &&
         createPortal(
           // <AddToCartModal product={product} onClose={closeModal} />
@@ -117,11 +121,12 @@ export const CardButtons = ({ product }: Product) => {
                   productDetails={productDetails}
                   onCloseModal={closeModal}
                   isBuyNow={isBuyNow}
+                  product={product}
                 />
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );
