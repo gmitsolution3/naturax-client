@@ -222,17 +222,16 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
       </div>
 
       {/* Video Section - Uncomment when needed */}
-      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Product Video
           </h2>
           <YouTubeVideoPlayer
-            videoUrl="https://youtu.be/myJ7x029Ves?si=Xmd-zZiwf1TglrhD"
-            thumbnail="https://i.postimg.cc/BQBxkN2C/maxresdefault.jpg"
+            videoUrl={product.featureVideo}
           />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

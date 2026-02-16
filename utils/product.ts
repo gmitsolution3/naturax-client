@@ -25,6 +25,7 @@ export interface ProductFormData {
   slug: string;
   description: string;
   shortDescription: string;
+  featureVideo: string;
   basePrice: string;
   purchase?: string;
   discount: Discount;

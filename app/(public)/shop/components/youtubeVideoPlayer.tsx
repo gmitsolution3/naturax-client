@@ -18,12 +18,13 @@ const getYoutubeId = (url: string) => {
 
 const YouTubeVideoPlayer: React.FC<YouTubeVideoPlayerProps> = ({
   videoUrl,
-  thumbnail,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoId = getYoutubeId(videoUrl);
 
   if (!videoId) return null;
+
+  console.log(videoId)
 
   return (
     <div className="w-full max-w-200 mx-auto">
@@ -32,10 +33,7 @@ const YouTubeVideoPlayer: React.FC<YouTubeVideoPlayerProps> = ({
           <>
             {/* Thumbnail */}
             <Image
-              src={
-                thumbnail ||
-                `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-              }
+              src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
               alt="YouTube Video"
               fill
               className="object-cover"
