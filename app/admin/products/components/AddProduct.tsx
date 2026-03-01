@@ -1,23 +1,12 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import {
-  Upload,
-  X,
-  Plus,
-  Trash2,
-  Save,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Upload, X, Plus, Trash2, Save } from "lucide-react";
 import { UploadeImage } from "@/app/components/uploadeImage";
 import { PreviewImages, ProductFormData } from "@/utils/product";
 import { toast } from "sonner";
-import DescriptionEditor from "./DescriptionEditor";
 
-// interface CategoryProps {
-//   allCategory:
-// }
+import DescriptionEditor from "./DescriptionEditor";
 
 export default function AddProductForm({ allCategory }: any) {
   const [formData, setFormData] = useState<ProductFormData>({
@@ -25,12 +14,9 @@ export default function AddProductForm({ allCategory }: any) {
     slug: "",
     description: "",
     shortDescription: "",
-    featureVideo: "",
     basePrice: "",
     purchase: "",
     discount: { type: "percentage", value: "" },
-    sku: "",
-    stockQuantity: "",
     stockStatus: "in-stock",
     categoryId: "",
     subCategoryId: "",
@@ -40,6 +26,7 @@ export default function AddProductForm({ allCategory }: any) {
     thumbnail: null,
     gallery: [],
     variants: [],
+    videoLink: "",
     seo: {
       metaTitle: "",
       metaDescription: "",
@@ -51,11 +38,16 @@ export default function AddProductForm({ allCategory }: any) {
   const [tagInput, setTagInput] = useState("");
   const [variantForm, setVariantForm] = useState({
     color: "",
-    size: "",
-    sku: "",
     price: "",
-    stock: "",
+    sizes: [] as { size: string; stock: string; sku: string }[],
   });
+
+  const [sizeInput, setSizeInput] = useState({
+    size: "",
+    stock: "",
+    sku: "",
+  });
+
   const [showVariantForm, setShowVariantForm] = useState(false);
   const [uploaded, setUploaded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -103,8 +95,6 @@ export default function AddProductForm({ allCategory }: any) {
     }));
   };
 
-  //   Record<string, unknown>;
-
   // Auto generate slug
   const generateSlug = (title: string) => {
     return title
@@ -121,6 +111,57 @@ export default function AddProductForm({ allCategory }: any) {
     setFormData((prev) => ({
       ...prev,
       slug: generateSlug(title),
+    }));
+  };
+
+  // size handler
+  const handleSizeInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === "size") {
+      const sku = generateSKU(productTitle, variantForm.color, value);
+
+      setSizeInput((prev) => ({
+        ...prev,
+        [name]: value,
+        sku: sku,
+      }));
+
+      return;
+    }
+
+    setSizeInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addSizeToVariant = () => {
+    if (!sizeInput.size || !sizeInput.stock || !sizeInput.sku) return;
+
+    const exists = variantForm.sizes.some(
+      (s) => s.size === sizeInput.size,
+    );
+
+    if (exists) {
+      alert("Size already added");
+      return;
+    }
+
+    setVariantForm((prev) => ({
+      ...prev,
+      sizes: [...prev.sizes, sizeInput],
+    }));
+
+    setSizeInput({ size: "", stock: "", sku: "" });
+  };
+
+  const removeSizeFromVariant = (index: number) => {
+    setVariantForm((prev) => ({
+      ...prev,
+      sizes: prev.sizes.filter((_, i) => i !== index),
     }));
   };
 
@@ -255,50 +296,37 @@ export default function AddProductForm({ allCategory }: any) {
         [name]: value,
       };
 
-      // auto SKU generate only when color or size changes
-      if (name === "color" || name === "size") {
-        updated.sku = generateSKU(
-          productTitle,
-          name === "color" ? value : prev.color,
-          name === "size" ? value : prev.size,
-        );
-      }
-
       return updated;
     });
   };
 
   const addVariant = () => {
-    if (
-      variantForm.color &&
-      variantForm.size &&
-      variantForm.sku &&
-      variantForm.stock
-    ) {
-      setFormData((prev) => ({
-        ...prev,
-        variants: [
-          ...prev.variants,
-          {
-            attributes: {
-              color: variantForm.color,
-              size: variantForm.size,
-            },
-            sku: variantForm.sku,
-            price: variantForm.price || undefined,
-            stock: parseInt(variantForm.stock),
-          },
-        ],
-      }));
-      setVariantForm({
-        color: "",
-        size: "",
-        sku: "",
-        price: "",
-        stock: "",
-      });
-      setShowVariantForm(false);
+    if (!variantForm.color || variantForm.sizes.length === 0) {
+      alert("Add color and at least one size");
+      return;
     }
+
+    setFormData((prev) => ({
+      ...prev,
+      variants: [
+        ...prev.variants,
+        {
+          color: variantForm.color,
+          price: variantForm.price,
+          sizes: variantForm.sizes.map((s) => ({
+            size: s.size,
+            stock: parseInt(s.stock),
+            sku: s.sku,
+          })),
+        },
+      ],
+    }));
+
+    setVariantForm({
+      color: "",
+      price: "",
+      sizes: [],
+    });
   };
 
   const removeVariant = (index: number) => {
@@ -341,14 +369,35 @@ export default function AddProductForm({ allCategory }: any) {
       toast.error(result.message);
     }
 
-    if (!res.ok) {
-      toast.error(`HTTP error! status: ${res.status}`);
+    if (result.success) {
+      toast.success(result?.message || "Product Added successfully");
     }
 
-    if (res.ok) {
-      toast.success("Form submitted! Check console for data.");
-    }
-
+    setFormData({
+      title: "",
+      slug: "",
+      description: "",
+      shortDescription: "",
+      basePrice: "",
+      purchase: "",
+      discount: { type: "percentage", value: "" },
+      stockStatus: "in-stock",
+      categoryId: "",
+      subCategoryId: "",
+      category: "",
+      subCategory: "",
+      tags: [],
+      thumbnail: null,
+      gallery: [],
+      variants: [],
+      videoLink: "",
+      seo: {
+        metaTitle: "",
+        metaDescription: "",
+      },
+      isDraft: false,
+      featured: false,
+    });
     setActiveTab("basic");
   };
 
@@ -375,7 +424,7 @@ export default function AddProductForm({ allCategory }: any) {
     pricing: ["basePrice"],
     inventory: ["sku", "stockQuantity", "stockStatus"],
     media: ["thumbnail"],
-    variants: [], // optional
+    variants: ["variants"], // optional
     seo: [], // submit time এ handle হবে
   };
 
@@ -399,6 +448,12 @@ export default function AddProductForm({ allCategory }: any) {
           previewImages.thumbnail !== null
         );
       }
+
+      // VARIANTS check (NEW)
+      if (field === "variants") {
+        return formData.variants.length > 0;
+      }
+
       // normal string check
       const value = formData[field as keyof ProductFormData];
       return value !== "" && value !== null;
@@ -499,21 +554,6 @@ export default function AddProductForm({ allCategory }: any) {
                   required
                   onChange={handleInputChange}
                   placeholder="Brief description for listings"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
-                  Product Feature Video
-                </label>
-                <input
-                  type="text"
-                  name="featureVideo"
-                  value={formData.featureVideo}
-                  required
-                  onChange={handleInputChange}
-                  placeholder="Enter YouTube video URL"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
@@ -702,36 +742,6 @@ export default function AddProductForm({ allCategory }: any) {
           {activeTab === "inventory" && (
             <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
-                  SKU (Stock Keeping Unit) *
-                </label>
-                <input
-                  type="text"
-                  name="sku"
-                  value={formData.sku}
-                  onChange={handleInputChange}
-                  placeholder="e.g., PRD-001"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Stock Quantity
-                  </label>
-                  <input
-                    type="number"
-                    name="stockQuantity"
-                    value={formData.stockQuantity}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="0"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">
                     Stock Status *
@@ -862,6 +872,21 @@ export default function AddProductForm({ allCategory }: any) {
                   </div>
                 )}
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Add Video Link(if have)
+                </label>
+                <input
+                  type="text"
+                  name="videoLink"
+                  value={formData.videoLink}
+                  required
+                  onChange={handleInputChange}
+                  placeholder="Add your youtube product video link"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
             </div>
           )}
 
@@ -879,17 +904,15 @@ export default function AddProductForm({ allCategory }: any) {
                       <thead>
                         <tr className="border-b border-gray-200">
                           <th className="text-left py-3 px-3 font-medium text-gray-700">
-                            Color
-                          </th>
-                          <th className="text-left py-3 px-3 font-medium text-gray-700">
                             Size
                           </th>
                           <th className="text-left py-3 px-3 font-medium text-gray-700">
-                            SKU
+                            Price
                           </th>
                           <th className="text-left py-3 px-3 font-medium text-gray-700">
-                            Stock
+                            Attributes
                           </th>
+
                           <th className="text-left py-3 px-3 font-medium text-gray-700">
                             Action
                           </th>
@@ -902,17 +925,51 @@ export default function AddProductForm({ allCategory }: any) {
                             className="border-b border-gray-100"
                           >
                             <td className="py-3 px-3">
-                              {variant.attributes.color}
+                              {variant.color}
                             </td>
+
+                            <td className="py-3 px-3 font-medium">
+                              {variant.price
+                                ? `৳ ${variant.price}`
+                                : "—"}
+                            </td>
+
                             <td className="py-3 px-3">
-                              {variant.attributes.size}
+                              <table className="w-full">
+                                <thead>
+                                  <tr className="border-b border-gray-300">
+                                    <th className="py-2 text-left font-semibold">
+                                      Size
+                                    </th>
+                                    <th className="py-2 text-left font-semibold">
+                                      Stock
+                                    </th>
+                                    <th className="py-2 text-left font-semibold">
+                                      SKU
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {variant.sizes.map((s) => (
+                                    <tr
+                                      key={s.size}
+                                      className="border-b border-gray-200 hover:bg-gray-50"
+                                    >
+                                      <td className="py-2 font-medium">
+                                        {s.size}
+                                      </td>
+                                      <td className="py-2 font-medium">
+                                        {s.stock}
+                                      </td>
+                                      <td className="py-2 font-medium">
+                                        {s.sku}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
                             </td>
-                            <td className="py-3 px-3">
-                              {variant.sku}
-                            </td>
-                            <td className="py-3 px-3">
-                              {variant.stock}
-                            </td>
+
                             <td className="py-3 px-3">
                               <button
                                 type="button"
@@ -934,49 +991,93 @@ export default function AddProductForm({ allCategory }: any) {
               {showVariantForm ? (
                 <div className="border border-gray-300 rounded-lg p-4 space-y-4 bg-gray-50">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-2">
-                        Color
-                      </label>
-                      <input
-                        type="text"
-                        name="color"
-                        value={variantForm.color}
-                        required
-                        onChange={handleVariantChange}
-                        placeholder="e.g., Red"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-2">
+                    <div className="col-span-full">
+                      <label className="block text-sm font-medium mb-2">
                         Size
                       </label>
                       <input
                         type="text"
-                        name="size"
-                        value={variantForm.size}
-                        onChange={handleVariantChange}
-                        required
-                        placeholder="e.g., M"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value={variantForm.color}
+                        onChange={(e) =>
+                          setVariantForm((prev) => ({
+                            ...prev,
+                            color: e.target.value,
+                          }))
+                        }
+                        className="w-full px-4 py-2 border rounded-lg"
                       />
+                    </div>
+
+                    <div className="mt-4 col-span-full">
+                      <h4 className="font-semibold mb-3">
+                        Add Sizes with Stock
+                      </h4>
+
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <input
+                          type="text"
+                          name="size"
+                          value={sizeInput.size}
+                          onChange={handleSizeInputChange}
+                          placeholder="Size (e.g., XL)"
+                          className="px-4 py-2 border rounded-lg"
+                        />
+
+                        <input
+                          type="number"
+                          name="stock"
+                          value={sizeInput.stock}
+                          onChange={handleSizeInputChange}
+                          placeholder="Stock"
+                          className="px-4 py-2 border rounded-lg"
+                        />
+
+                        <input
+                          type="text"
+                          name="sku"
+                          value={sizeInput.sku}
+                          onChange={handleSizeInputChange}
+                          placeholder="SKU (auto-generated)"
+                          className="px-4 py-2 border rounded-lg"
+                          disabled
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={addSizeToVariant}
+                        className="px-4 py-2 bg-primary text-white rounded-lg mb-4 w-[200px]"
+                      >
+                        Add Size
+                      </button>
+
+                      {variantForm.sizes.length > 0 && (
+                        <div className="space-y-2">
+                          {variantForm.sizes.map((s, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between items-center border px-3 py-2 rounded"
+                            >
+                              <span>
+                                Size: {s.size} - {s.stock} pcs
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeSizeFromVariant(index)
+                                }
+                                className="text-red-500"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-2">
-                        SKU
-                      </label>
-                      <input
-                        type="text"
-                        name="sku"
-                        value={variantForm.sku}
-                        readOnly
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
+                  <div>
                     <div>
                       <label className="block text-sm font-medium text-gray-900 mb-2">
                         Price (Optional)
@@ -992,21 +1093,6 @@ export default function AddProductForm({ allCategory }: any) {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Stock *
-                    </label>
-                    <input
-                      type="number"
-                      name="stock"
-                      value={variantForm.stock}
-                      required
-                      onChange={handleVariantChange}
-                      placeholder="0"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
                   </div>
 
                   <div className="flex gap-3 flex-col sm:flex-row">
@@ -1035,6 +1121,14 @@ export default function AddProductForm({ allCategory }: any) {
                   <Plus size={20} />
                   Add New Variant
                 </button>
+              )}
+
+              {/* Validation Message */}
+              {formData.variants.length === 0 && (
+                <div className="mt-4 text-sm text-red-600 font-medium">
+                  ⚠️ Please add at least one variant before
+                  proceeding.
+                </div>
               )}
             </div>
           )}

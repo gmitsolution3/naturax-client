@@ -6,7 +6,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { handleWhatsApp } from "./../(public)/shop/components/handleWhatsApp";
 import { createPortal } from "react-dom";
 import ProductVariant from "./../(public)/shop/components/ProductVariants";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ product }: { product: any }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
@@ -17,49 +17,38 @@ const ProductCard = ({ product }: { product: any }) => {
 
   const from = "cardButton";
 
-  const productPrice =
-    product.discount.type === "percentage"
-      ? Math.floor(
-          Number(product.basePrice) -
-            (Number(product.basePrice) *
-              Number(product.discount.value)) /
-              100,
-        )
-      : Math.max(
-          Number(product.basePrice) - Number(product.discount.value),
-          0,
-        );
+  const basePrice = Number(product?.basePrice) || 0;
+  const discountType = product?.discount?.type;
+  const discountValue = Number(product?.discount?.value) || 0;
+
+  let finalPrice = basePrice;
+  let discountAmount = 0;
+
+  if (discountType === "percentage" && discountValue > 0) {
+    discountAmount = Math.floor((basePrice * discountValue) / 100);
+    finalPrice = Math.max(basePrice - discountAmount, 0);
+  } else if (discountType === "flat" && discountValue > 0) {
+    discountAmount = discountValue;
+    finalPrice = Math.max(basePrice - discountAmount, 0);
+  }
+
+  const hasDiscount = discountAmount > 0;
+
+  const discountLabel =
+    discountType === "percentage"
+      ? `-${discountValue}%`
+      : discountType === "flat"
+        ? `-৳${discountValue}`
+        : "";
 
   const { title, slug, thumbnail } = product;
 
   const productDetails = {
-    productPrice,
+    productPrice: finalPrice,
     title,
     slug,
     thumbnail,
   };
-
-  const calculatePrice = () => {
-    const base = parseInt(product.basePrice);
-    if (product.discount.type === "flat") {
-      return base - parseInt(product.discount.value);
-    } else if (product.discount.type === "percentage") {
-      return base - (base * parseInt(product.discount.value)) / 100;
-    }
-    return base;
-  };
-
-  const getDiscountLabel = () => {
-    if (product.discount.type === "flat") {
-      return `-৳${product.discount.value}`;
-    } else if (product.discount.type === "percentage") {
-      return `-${product.discount.value}%`;
-    }
-    return "";
-  };
-
-  const discountedPrice = calculatePrice();
-  const hasDiscount = parseInt(product.discount.value) > 0;
 
   const handleAddToCart = () => {
     setIsCartModalOpen(true);
@@ -86,7 +75,7 @@ const ProductCard = ({ product }: { product: any }) => {
         <div className="absolute top-3 left-3 z-20 flex flex-col gap-1">
           {hasDiscount && (
             <span className="bg-primary text-white text-xs font-semibold px-2.5 py-1">
-              {getDiscountLabel()}
+              {discountLabel}
             </span>
           )}
           {product.stockQuantity <= 10 && (
@@ -114,13 +103,16 @@ const ProductCard = ({ product }: { product: any }) => {
         </div>
 
         {/* Product Image */}
-        <div className="relative cursor-pointer" onClick={handleViewDetail}>
+        <div
+          className="relative cursor-pointer"
+          onClick={handleViewDetail}
+        >
           <img
             src={product.thumbnail}
             alt={product.title}
             className="w-full h-80 object-cover transition-transform duration-500 group-hover/product:scale-105"
           />
-          
+
           {/* Dark overlay on hover */}
           <div className="absolute inset-0 bg-black/0 group-hover/product:bg-black/10 transition-all duration-300" />
         </div>
@@ -162,7 +154,7 @@ const ProductCard = ({ product }: { product: any }) => {
         </div>
 
         {/* Title */}
-        <h3 
+        <h3
           onClick={handleViewDetail}
           className="text-gray-900 font-medium text-base mb-3 line-clamp-2 leading-snug min-h-[3rem] hover:text-primary transition-colors cursor-pointer"
         >
@@ -171,18 +163,27 @@ const ProductCard = ({ product }: { product: any }) => {
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-4">
-          <span className="text-xl font-bold text-gray-900">
-            ৳{discountedPrice}
-          </span>
-          {hasDiscount && (
+          {hasDiscount ? (
             <>
+              {/* Base Price (Strikethrough) */}
               <span className="text-sm text-gray-400 line-through">
-                ৳{product.basePrice}
+                ৳{basePrice}
               </span>
+
+              {/* Final Discounted Price */}
+              <span className="text-xl font-bold text-gray-900">
+                ৳{finalPrice}
+              </span>
+
+              {/* Save Amount */}
               <span className="text-xs font-semibold text-green-600">
-                Save ৳{parseInt(product.basePrice) - discountedPrice}
+                Save ৳{discountAmount}
               </span>
             </>
+          ) : (
+            <span className="text-xl font-bold text-gray-900">
+              ৳{basePrice}
+            </span>
           )}
         </div>
 

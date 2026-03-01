@@ -1,28 +1,19 @@
-import { getDeletedProduct } from '@/lib/products';
-import React from 'react'
-import ProductTable from '../components/allProduct';
+import { getDeletedProduct } from "@/lib/products";
+import React from "react";
+import DeletedProductsTable from "../components/DeletedProductTable";
 
-const DeletedProducts = async() => {
-
+const DeletedProducts = async () => {
   const res = await getDeletedProduct();
 
   const result = res.data;
 
-
-
-  const productDescription = {
-    title: "Deleted Product",
-    subTitle: "Manage your deleted product inventory",
-  };
-
   return (
     <div>
-      <ProductTable
-        INITIAL_PRODUCTS={result}
-        description={productDescription}
+      <DeletedProductsTable
+        initialProducts={res.success ? result : []}
       />
     </div>
   );
-}
+};
 
 export default DeletedProducts;

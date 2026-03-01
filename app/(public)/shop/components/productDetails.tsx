@@ -46,7 +46,7 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
         );
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <div className="bg-linear-to-b from-gray-50 to-white min-h-screen">
       {/* Product Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -54,7 +54,7 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
           <div className="relative">
             {/* Discount Badge */}
             {Number(product.discount.value) > 0 && (
-              <div className="absolute top-4 left-30 z-10 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse">
+              <div className="absolute top-4 left-30 z-10 bg-linear-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse">
                 <Tag className="w-4 h-4" />
                 <span className="font-bold text-sm">
                   {discountPercentage}% OFF
@@ -113,9 +113,9 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
             </div>
 
             {/* Price Section */}
-            <div className="bg-gradient-to-r from-gray-50 to-white p-6 rounded-xl border-2 border-primary/20">
+            <div className="bg-linear-to-r from-gray-50 to-white p-6 rounded-xl border-2 border-primary/20">
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-bold text-primary">
+                <span className="text-4xl font-bold text-gray-700">
                   ৳{productPrice.toLocaleString()}
                 </span>
                 {Number(product.discount.value) > 0 && (
@@ -166,7 +166,7 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
               <div className="flex flex-col items-center gap-2 text-xs text-gray-600 bg-white p-3 rounded-lg border border-gray-200">
                 <Truck className="w-5 h-5 text-blue-600" />
                 <span className="font-medium text-center">
-                  Free Ship
+                  Easy Ship
                 </span>
               </div>
               <div className="flex flex-col items-center gap-2 text-xs text-gray-600 bg-white p-3 rounded-lg border border-gray-200">
@@ -222,16 +222,19 @@ export const ProductDetail = ({ product }: ProductDetailsProps) => {
       </div>
 
       {/* Video Section - Uncomment when needed */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Product Video
-          </h2>
-          <YouTubeVideoPlayer
-            videoUrl={product.featureVideo}
-          />
+      {product?.videoLink && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Product Video
+            </h2>
+            <YouTubeVideoPlayer
+              videoUrl={product.videoLink || ""}
+              thumbnail={product.gallery[0]}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

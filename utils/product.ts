@@ -5,13 +5,13 @@ interface Discount {
 }
 
 interface Variant {
-  attributes: {
-    color: string;
+  color: string;
+  price: string;
+  sizes: {
     size: string;
-  };
-  sku: string;
-  price?: string;
-  stock: number;
+    stock: number;
+    sku: string;
+  }[];
 }
 
 interface Seo {
@@ -25,12 +25,9 @@ export interface ProductFormData {
   slug: string;
   description: string;
   shortDescription: string;
-  featureVideo: string;
   basePrice: string;
   purchase?: string;
   discount: Discount;
-  sku: string;
-  stockQuantity: string;
   stockStatus: "in-stock" | "out-of-stock" | "pre-order";
   categoryId: string;
   category: string;
@@ -41,6 +38,7 @@ export interface ProductFormData {
   gallery: string[];
   variants: Variant[];
   seo: Seo;
+  videoLink?: string;
   isDraft: boolean;
   featured: boolean;
 }
